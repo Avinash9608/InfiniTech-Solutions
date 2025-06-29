@@ -6,17 +6,18 @@ import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-primary via-primary/80 to-secondary -mt-20">
-      <div className="absolute inset-0 opacity-10">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden -mt-20">
+      <div className="absolute inset-0">
         <Image 
-          src="https://placehold.co/1920x1080.png" 
-          alt="Abstract technology background" 
+          src="https://media.istockphoto.com/id/1363104929/photo/multi-ethnic-office-conference-room-indian-ceo-does-presentation-for-diverse-young.jpg" 
+          alt="Office conference room meeting" 
           fill
           objectFit="cover" 
           quality={80}
-          data-ai-hint="abstract technology"
           priority
         />
+        {/* Added a dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
       <div className="relative z-10 p-8 max-w-3xl mx-auto">
         <motion.h1 
