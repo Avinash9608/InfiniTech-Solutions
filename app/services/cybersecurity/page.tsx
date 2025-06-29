@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import PageHeader from '@/components/shared/PageHeader';
 import { 
   ShieldCheck,
-  ArrowRight,
   ScanSearch,
   Network,
   FileLock,
@@ -262,7 +261,7 @@ export default function CybersecurityPage() {
           <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
             Don't wait for a security incident to happen. Let our experts assess your vulnerabilities and build a defense strategy tailored to your needs.
           </p>
-          <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
+          <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
               <Link href="/contact">Request a Free Security Consultation</Link>
           </Button>
         </div>
