@@ -96,10 +96,16 @@ const caseStudies = [
 export default function WebDevelopmentPage() {
   return (
     <>
-      <PageHeader
-        title="Web Design & Development"
-        description="We build modern, responsive, and secure web applications that drive user engagement and deliver exceptional business value. From sleek marketing sites to complex enterprise platforms, we bring your vision to life."
-      />
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={sectionVariants}
+      >
+        <PageHeader
+          title="Crafting Digital Experiences That Convert"
+          description="We don't just build websites. We architect powerful, high-performance web applications that captivate your audience, drive engagement, and deliver tangible business results. Your vision, engineered for excellence."
+        />
+      </motion.div>
 
       {/* Custom Solutions Section */}
       <motion.section 
