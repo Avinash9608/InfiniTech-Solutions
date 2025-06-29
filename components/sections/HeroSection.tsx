@@ -46,7 +46,7 @@ export default function HeroSection() {
           <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
             <Link href="/contact">Get a Free Consultation</Link>
           </Button>
-          <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary shadow-lg transform hover:scale-105 transition-transform duration-300">
+          <Button size="lg" variant="outline" asChild className="text-accent border-accent hover:bg-accent hover:text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
             <Link href="/services">Explore Our Services</Link>
           </Button>
         </motion.div>
