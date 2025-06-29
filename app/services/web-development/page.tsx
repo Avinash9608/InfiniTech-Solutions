@@ -1,3 +1,4 @@
+
 "use client";
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -21,6 +22,7 @@ import {
 import Link from 'next/link';
 import ContactForm from '@/components/sections/ContactForm';
 import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -180,15 +182,20 @@ export default function WebDevelopmentPage() {
         <div className="container mx-auto px-4">
            <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary mb-4 flex items-center justify-center"><Laptop className="w-8 h-8 mr-3" /> Our Tech Stack</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">We use a modern, robust, and scalable technology stack to build high-quality web solutions.</p>
           </div>
           <Card className="max-w-4xl mx-auto p-6 md:p-8 shadow-lg">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {techStack.map(stack => (
                 <div key={stack.category}>
-                  <h3 className="text-lg font-semibold text-primary mb-3">{stack.category}</h3>
-                  <ul className="space-y-2">
-                    {stack.techs.map(tech => <li key={tech} className="text-muted-foreground">{tech}</li>)}
-                  </ul>
+                  <h3 className="text-lg font-semibold text-primary mb-4 border-b pb-2">{stack.category}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {stack.techs.map(tech => (
+                      <Badge key={tech} variant="secondary" className="font-medium">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
