@@ -392,7 +392,7 @@ export default function WebDevelopmentPage() {
             <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
               <Link href="/contact">Book a Free Consultation</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
+            <Button size="lg" variant="outline" asChild className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
               <Link href="/portfolio">View Full Portfolio</Link>
             </Button>
           </div>
