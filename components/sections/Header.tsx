@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/src/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/src/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from '@/components/shared/ThemeToggle';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -27,18 +28,9 @@ const serviceItems = [
 ];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
@@ -50,9 +42,7 @@ export default function Header() {
   
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-card/80 backdrop-blur-sm shadow-lg"
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <Link href="/" className="text-2xl font-bold text-primary">
@@ -81,16 +71,18 @@ export default function Header() {
           <NavLink href="/about">About Us</NavLink>
         </nav>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-4">
           <Button asChild>
             <Link href="/contact">Contact Us</Link>
           </Button>
+          <ThemeToggle />
         </div>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={isScrolled ? 'text-primary' : 'text-primary-foreground'}>
+              <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
