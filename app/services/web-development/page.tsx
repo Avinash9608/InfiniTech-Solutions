@@ -110,11 +110,11 @@ export default function WebDevelopmentPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://placehold.co/600x450.png"
+                src="https://media.istockphoto.com/id/2212360504/photo/holographic-ui-ux-display-icons-of-ux-ui-designer-creative-planning-data-visualization-web.jpg?s=612x612&w=0&k=20&c=djva2dSeRul05un08MwAq6mtJWziQ98K8eEa9y8YBh4="
                 alt="Web development process"
                 fill
-                objectFit="cover"
-                data-ai-hint="web development ui"
+                className="object-cover"
+                data-ai-hint="holographic ui"
               />
             </motion.div>
             <div>
@@ -351,7 +351,7 @@ export default function WebDevelopmentPage() {
                       src={project.imageUrl} 
                       alt={project.title} 
                       fill
-                      objectFit="cover"
+                      className="object-cover"
                       data-ai-hint={project.dataAiHint}
                     />
                   </div>
