@@ -23,7 +23,8 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6 shadow-sm"
+          className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6"
+          style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.7)' }}
         >
           Innovative IT Solutions for Your Business Growth
         </motion.h1>
@@ -32,6 +33,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-xl md:text-2xl text-primary-foreground/90 mb-10"
+          style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.7)' }}
         >
           We provide cutting-edge web design, digital marketing, and software development services to help your business thrive.
         </motion.p>
