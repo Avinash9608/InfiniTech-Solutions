@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/src/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/src/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu';
@@ -29,12 +29,36 @@ const serviceItems = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    if (isHomePage) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll(); // Check on initial render
+      return () => window.removeEventListener('scroll', handleScroll);
+    } else {
+      setIsScrolled(true);
+    }
+  }, [isHomePage]);
+
+  const navLinkClasses = (isActive: boolean) => {
+    const base = 'transition-colors hover:text-primary';
+    const scrolledState = isScrolled ? 'text-foreground' : 'text-primary-foreground';
+    const activeState = isScrolled ? 'text-primary font-semibold' : 'text-primary-foreground font-semibold';
+    
+    return `${base} ${isActive ? activeState : scrolledState}`;
+  };
 
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`transition-colors hover:text-primary ${isActive ? 'text-primary font-semibold' : 'text-foreground'}`}>
+      <Link href={href} className={navLinkClasses(isActive)}>
         {children}
       </Link>
     );
@@ -42,10 +66,10 @@ export default function Header() {
   
   return (
     <header 
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-card/80 backdrop-blur-sm shadow-lg"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
-        <Link href="/" className="text-2xl font-bold text-primary">
+        <Link href="/" className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}>
           InfiniTech
         </Link>
 
@@ -54,7 +78,7 @@ export default function Header() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className={`transition-colors hover:text-primary px-0 hover:bg-transparent ${pathname.startsWith('/services') ? 'text-primary font-semibold' : 'text-foreground'}`}>
+              <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
                 Services <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -82,7 +106,7 @@ export default function Header() {
           <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className={isScrolled ? 'text-foreground' : 'text-primary-foreground'}>
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
