@@ -16,7 +16,7 @@ export default function HeroSection() {
           quality={80}
           priority
         />
-        <div className="absolute inset-0 bg-black/80" />
+        <div className="absolute inset-0 bg-black/70" />
       </div>
       <div className="relative z-10 p-8 max-w-3xl mx-auto">
         <motion.h1 
