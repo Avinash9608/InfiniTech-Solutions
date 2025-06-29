@@ -16,7 +16,7 @@ export default function HeroSection() {
           quality={80}
           priority
         />
-        <div className="absolute inset-0 bg-black/75"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/70 to-black/20" />
       </div>
       <div className="relative z-10 p-8 max-w-3xl mx-auto">
         <motion.h1 
@@ -24,7 +24,6 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6"
-          style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.7)' }}
         >
           Innovative IT Solutions for Your Business Growth
         </motion.h1>
@@ -33,7 +32,6 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-xl md:text-2xl text-primary-foreground/90 mb-10"
-          style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.7)' }}
         >
           We provide cutting-edge web design, digital marketing, and software development services to help your business thrive.
         </motion.p>
