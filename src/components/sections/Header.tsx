@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
+import { motion } from 'framer-motion';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -26,6 +27,36 @@ const serviceItems = [
   { href: '/services/managed-services', label: 'Managed Services' },
   { href: '/services/digital-marketing', label: 'Digital Marketing' },
 ];
+
+const headerVariants = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 20,
+      delay: 0.1,
+      when: 'beforeChildren',
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: -20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+    },
+  },
+};
+
+const MotionLink = motion(Link);
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -65,42 +96,66 @@ export default function Header() {
   };
   
   return (
-    <header 
+    <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}
+      variants={headerVariants}
+      initial="hidden"
+      animate="visible"
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
-        <Link href="/" className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}>
+        <MotionLink
+          href="/"
+          className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}
+          variants={itemVariants}
+        >
           InfiniTech
-        </Link>
+        </MotionLink>
 
-        <nav className="hidden md:flex items-center space-x-6">
-          <NavLink href="/">Home</NavLink>
+        <motion.nav
+          className="hidden md:flex items-center space-x-6"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
+          <motion.div variants={itemVariants}>
+            <NavLink href="/">Home</NavLink>
+          </motion.div>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
-                Services <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {serviceItems.map((item) => (
-                <DropdownMenuItem key={item.label} asChild>
-                  <Link href={item.href}>{item.label}</Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <motion.div variants={itemVariants}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
+                  Services <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {serviceItems.map((item) => (
+                  <DropdownMenuItem key={item.label} asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </motion.div>
 
-          <NavLink href="/portfolio">Portfolio</NavLink>
-          <NavLink href="/about">About Us</NavLink>
-        </nav>
+          <motion.div variants={itemVariants}>
+            <NavLink href="/portfolio">Portfolio</NavLink>
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <NavLink href="/about">About Us</NavLink>
+          </motion.div>
+        </motion.nav>
 
-        <div className="hidden md:flex items-center gap-4">
+        <motion.div className="hidden md:flex items-center gap-4" variants={itemVariants}>
           <Button asChild>
             <Link href="/contact">Contact Us</Link>
           </Button>
           <ThemeToggle />
-        </div>
+        </motion.div>
 
         <div className="md:hidden flex items-center gap-2">
           <ThemeToggle />
@@ -144,6 +199,6 @@ export default function Header() {
           </Sheet>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
