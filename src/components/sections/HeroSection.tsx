@@ -1,5 +1,5 @@
 "use client";
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import Image from 'next/image';
 
 export default function HeroSection() {
@@ -14,20 +14,20 @@ export default function HeroSection() {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-primary via-primary/80 to-secondary">
-      <div className="absolute inset-0 opacity-10">
-        <Image 
-          src="https://placehold.co/1920x1080.png" 
-          alt="Abstract technology background" 
-          layout="fill" 
-          objectFit="cover" 
-          quality={80}
-          data-ai-hint="abstract technology"
-          priority
-        />
-      </div>
+    <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
+        <div className="absolute inset-0">
+            <Image 
+              src="https://media.istockphoto.com/id/1363104929/photo/multi-ethnic-office-conference-room-indian-ceo-does-presentation-for-diverse-young.jpg?s=612x612&w=0&k=20&c=xMl3le4J8C91NphAHfvCCl8A68qjd1rHSIChVLni6VE=" 
+              alt="Office conference room meeting" 
+              fill
+              className="object-cover"
+              quality={80}
+              priority
+            />
+            <div className="absolute inset-0 bg-[rgba(0,0,0,0.8)]" />
+        </div>
       <div className="relative z-10 p-8 max-w-3xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6 shadow-sm">
+        <h1 className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6">
           Innovative IT Solutions for Your Business Growth
         </h1>
         <p className="text-xl md:text-2xl text-primary-foreground/90 mb-10">
