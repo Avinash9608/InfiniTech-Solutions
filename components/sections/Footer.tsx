@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Linkedin, Facebook, Instagram, Twitter, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const footerNavItems = [
