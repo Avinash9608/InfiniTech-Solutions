@@ -105,11 +105,11 @@ export default function CybersecurityPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://media.istockphoto.com/id/1445961658/photo/cybersecurity-and-data-protection-concept-fingerprint-and-biometric-authentication-to-access.jpg?s=2048x2048&w=is&k=20&c=6BwzIeX1uG5oHZqT9d821r0uLd0W2PauZg1_FqKx12M="
+                src="https://plus.unsplash.com/premium_photo-1744699229541-6652fdf89b52?q=80&w=1243&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Cybersecurity concept with digital lock"
                 fill
                 className="object-cover"
-                data-ai-hint="cybersecurity lock"
+                data-ai-hint="digital fortress"
               />
             </motion.div>
           </div>
