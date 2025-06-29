@@ -1,3 +1,4 @@
+
 "use client";
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -20,6 +21,7 @@ import {
   BrainCircuit,
   ClipboardCheck,
   Handshake,
+  CheckCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import ContactForm from '@/components/sections/ContactForm';
