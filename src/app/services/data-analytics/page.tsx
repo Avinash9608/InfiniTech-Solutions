@@ -99,7 +99,7 @@ export default function DataAnalyticsPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://media.istockphoto.com/id/1419853993/photo/digital-transformation-concept-system-engineering-puzzle-of-new-business-and-digital.jpg?s=612x612&w=0&k=20&c=6K1Zp51Jnbx33z2a3K6h-42pTSRn3T2iP4gT0sseeC0="
+                src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Data analytics dashboard concept"
                 fill
                 className="object-cover"
@@ -281,3 +281,5 @@ export default function DataAnalyticsPage() {
     </>
   );
 }
+
+    
