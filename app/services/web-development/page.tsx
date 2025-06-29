@@ -1,11 +1,11 @@
 "use client";
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Button } from '@/src/components/ui/button';
 import PageHeader from '@/components/shared/PageHeader';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import ContactForm from '@/components/sections/ContactForm';
+import ContactForm from '@/src/components/sections/ContactForm';
 import { motion } from 'framer-motion';
 
 const sectionVariants = {
