@@ -76,7 +76,7 @@ export default function PortfolioSection({ summary = false }: PortfolioSectionPr
                       src={project.imageUrl} 
                       alt={project.title} 
                       fill 
-                      objectFit="cover"
+                      className="object-cover"
                       data-ai-hint={project.dataAiHint || project.category.toLowerCase()}
                     />
                   </div>

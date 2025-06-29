@@ -46,7 +46,7 @@ export default function AboutPage() {
                 src="https://placehold.co/600x400.png"
                 alt="Our team working"
                 fill
-                objectFit="cover"
+                className="object-cover"
                 data-ai-hint="team collaboration office"
               />
             </motion.div>
