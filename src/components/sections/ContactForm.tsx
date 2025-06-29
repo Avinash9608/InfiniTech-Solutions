@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, CheckCircle, AlertCircle, Lightbulb } from 'lucide-react';
-import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
+import { generateItSolutions } from '@/src/ai/flows/generate-it-solutions';
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -74,7 +74,7 @@ export default function ContactForm() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-primary mb-4">Get in Touch</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind or need expert IT advice? Fill out the form below, and we&apos;ll get back to you. 
+            Have a project in mind or need expert IT advice? Fill out the form below, and we'll get back to you. 
             Provide your business details to get AI-powered IT solution recommendations!
           </p>
         </div>

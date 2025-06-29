@@ -1,12 +1,12 @@
 "use client";
 
 import Image from 'next/image';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent, CardHeader } from '@/src/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/src/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Star } from 'lucide-react';
-import type { Testimonial } from '@/lib/types';
+import type { Testimonial } from '@/src/lib/types';
 
 const testimonialsData: Testimonial[] = [
   {

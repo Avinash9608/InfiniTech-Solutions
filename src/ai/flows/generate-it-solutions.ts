@@ -8,7 +8,7 @@
  * - GenerateItSolutionsOutput - The return type for the generateItSolutions function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '@/src/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateItSolutionsInputSchema = z.object({

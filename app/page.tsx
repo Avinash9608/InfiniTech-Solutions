@@ -1,12 +1,12 @@
 "use client";
 
-import HeroSection from '@/components/sections/HeroSection';
-import ServicesSection from '@/components/sections/ServicesSection';
-import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import CtaBanner from '@/components/sections/CtaBanner';
-import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
-import PortfolioSection from '@/components/sections/PortfolioSection';
-import BrandsSection from '@/components/sections/BrandsSection';
+import HeroSection from '@/src/components/sections/HeroSection';
+import ServicesSection from '@/src/components/sections/ServicesSection';
+import TestimonialsSection from '@/src/components/sections/TestimonialsSection';
+import CtaBanner from '@/src/components/sections/CtaBanner';
+import WhyChooseUsSection from '@/src/components/sections/WhyChooseUsSection';
+import PortfolioSection from '@/src/components/sections/PortfolioSection';
+import BrandsSection from '@/src/components/sections/BrandsSection';
 import { motion } from 'framer-motion';
 
 const sectionVariants = {
