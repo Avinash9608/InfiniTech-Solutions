@@ -110,7 +110,7 @@ export default function WebDevelopmentPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://media.istockphoto.com/id/2212360504/photo/holographic-ui-ux-display-icons-of-ux-ui-designer-creative-planning-data-visualization-web.jpg?s=612x612&w=0&k=20&c=djva2dSeRul05un08MwAq6mtJWziQ98K8eEa9y8YBh4="
+                src="https://media.istockphoto.com/id/2212360504/photo/holographic-ui-ux-display-icons-of-ux-ui-designer-creative-planning-data-visualization-web.jpg?s=2048x2048&w=is&k=20&c=Lcx7WupVOFhWObH51TlPlLkyS8yEcVgvCC10CQRSrFk="
                 alt="Web development process"
                 fill
                 className="object-cover"
