@@ -1,7 +1,7 @@
 "use client";
 import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import PageHeader from '@/components/shared/PageHeader';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
