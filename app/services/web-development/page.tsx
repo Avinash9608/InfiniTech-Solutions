@@ -389,10 +389,10 @@ export default function WebDevelopmentPage() {
             From startups to enterprises, we empower businesses to scale with smart, scalable, and stunning web solutions. Ready to get started?
           </p>
           <div className="flex justify-center gap-4">
-            <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
+            <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
               <Link href="/contact">Book a Free Consultation</Link>
             </Button>
-             <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
+            <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
               <Link href="/portfolio">View Full Portfolio</Link>
             </Button>
           </div>
