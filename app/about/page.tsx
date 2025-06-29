@@ -43,11 +43,11 @@ export default function AboutPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
                <Image
-                src="https://placehold.co/600x400.png"
-                alt="Our team working"
+                src="https://media.istockphoto.com/id/1979289147/photo/data-analysis-science-and-big-data-with-ai-technology-analyst-or-scientist-uses-a-computer.jpg?s=2048x2048&w=is&k=20&c=CnYhOjeTPisYsN-OLYVp60ZNKK3jP3JCPZrCjxCqmto="
+                alt="Data analysis and AI technology"
                 fill
                 className="object-cover"
-                data-ai-hint="team collaboration office"
+                data-ai-hint="data analysis"
               />
             </motion.div>
           </div>
