@@ -75,7 +75,7 @@ export default function AboutPage() {
           <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
             We're always looking for talented individuals to join our growing team. If you're passionate about technology and innovation, we'd love to hear from you.
           </p>
-          <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
+          <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
             <Link href="/careers">View Open Positions</Link>
           </Button>
         </div>
