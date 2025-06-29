@@ -89,8 +89,9 @@ export default function Header() {
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={navLinkClasses(isActive)}>
+      <Link href={href} className={`${navLinkClasses(isActive)} relative group`}>
         {children}
+        <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out group-hover:scale-x-100 ${isActive ? 'scale-x-100' : 'scale-x-0'}`} />
       </Link>
     );
   };
@@ -128,8 +129,9 @@ export default function Header() {
           <motion.div variants={itemVariants}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
+                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent relative group`}>
                   Services <ChevronDown className="ml-1 h-4 w-4" />
+                  <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out group-hover:scale-x-100 ${pathname.startsWith('/services') ? 'scale-x-100' : 'scale-x-0'}`} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
