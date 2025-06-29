@@ -52,7 +52,6 @@ export default function ContactForm() {
         toast({
           title: "Message Sent & Solutions Generated!",
           description: "We've received your details and generated some initial IT solutions.",
-          variant: "default",
         });
         reset(); // Reset form after successful submission
       } catch (error) {
@@ -137,7 +136,7 @@ export default function ContactForm() {
                   <AlertTitle className="font-semibold text-accent">AI-Generated IT Solution Ideas</AlertTitle>
                   <AlertDescription className="whitespace-pre-wrap mt-2 text-sm">
                     {aiSolution.solutions}
-                  </Description>
+                  </AlertDescription>
                 </Alert>
               )}
             </CardContent>
