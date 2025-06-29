@@ -1,4 +1,3 @@
-
 "use client";
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -98,11 +97,11 @@ export default function ManagedServicesPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1573496774431-4eb0a69a3939?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="IT support team working"
+                src="https://media.istockphoto.com/id/1179188076/photo/website-design-developing-programming-and-coding-technologies.webp?a=1&b=1&s=612x612&w=0&k=20&c=gKr0NvivGA4vVIkjYNAI2eCcOrAWx-yvTlsdPBU3dbM="
+                alt="Website design and coding technologies"
                 fill
                 className="object-cover"
-                data-ai-hint="it support team"
+                data-ai-hint="coding technologies"
               />
             </motion.div>
           </div>
