@@ -11,11 +11,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const allProjects: Project[] = [
-  { id: '1', title: 'E-commerce Platform', description: 'A full-featured online store for a fashion brand.', imageUrl: 'https://placehold.co/600x400.png', category: 'Web', dataAiHint: 'ecommerce fashion' },
+  { id: '1', title: 'E-commerce Platform', description: 'A full-featured online store for a fashion brand.', imageUrl: 'https://plus.unsplash.com/premium_photo-1681488262364-8aeb1b6aac56?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', category: 'Web', dataAiHint: 'ecommerce fashion' },
   { id: '2', title: 'Mobile Banking App', description: 'Secure and intuitive banking app for iOS and Android.', imageUrl: 'https://placehold.co/600x400.png', category: 'App', dataAiHint: 'mobile banking' },
   { id: '3', title: 'SEO Campaign for SaaS', description: 'Improved search rankings and organic traffic for a tech startup.', imageUrl: 'https://placehold.co/600x400.png', category: 'Marketing', dataAiHint: 'seo analytics' },
   { id: '4', title: 'CRM Software', description: 'Custom CRM solution for managing client relationships.', imageUrl: 'https://placehold.co/600x400.png', category: 'Software', dataAiHint: 'crm dashboard' },
-  { id: '5', title: 'Restaurant Booking System', description: 'Web application for online table reservations.', imageUrl: 'https://placehold.co/600x400.png', category: 'Web', dataAiHint: 'restaurant booking' },
+  { id: '5', title: 'Restaurant Booking System', description: 'Web application for online table reservations.', imageUrl: 'https://images.unsplash.com/photo-1724426057815-a12b34f027c1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHJlc3R1cmFudHxlbnwwfHwwfHx8MA%3D%3D', category: 'Web', dataAiHint: 'restaurant booking' },
   { id: '6', title: 'Fitness Tracker App', description: 'Mobile app to monitor workouts and health metrics.', imageUrl: 'https://placehold.co/600x400.png', category: 'App', dataAiHint: 'fitness tracker' },
   { id: '7', title: 'Cybersecurity Audit', description: 'Comprehensive security audit for a financial firm.', imageUrl: 'https://placehold.co/600x400.png', category: 'Cybersecurity', dataAiHint: 'cybersecurity server' },
   { id: '8', title: 'Cloud Migration', description: 'Migrated on-premise infrastructure to AWS for a large enterprise.', imageUrl: 'https://placehold.co/600x400.png', category: 'Cloud', dataAiHint: 'cloud infrastructure' },
