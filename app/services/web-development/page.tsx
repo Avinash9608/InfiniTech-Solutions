@@ -43,6 +43,11 @@ const cardVariants = {
   }),
 };
 
+const timelineItemVariants = (isLeft: boolean) => ({
+  hidden: { opacity: 0, x: isLeft ? -100 : 100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+});
+
 
 const workflowSteps = [
   { title: "Discovery & Planning", description: "Deep dive into your business goals" },
@@ -135,38 +140,60 @@ export default function WebDevelopmentPage() {
       </motion.section>
       
       {/* Development Workflow */}
-      <motion.section 
+      <motion.section
         className="py-16 md:py-24 bg-secondary"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }}
         variants={sectionVariants}
       >
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4 flex items-center justify-center"><Cog className="w-8 h-8 mr-3" /> Our Development Workflow</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-primary mb-4 flex items-center justify-center">
+              <Cog className="w-8 h-8 mr-3" /> Our Development Workflow
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              We follow a structured and transparent process to ensure your project is a success from start to finish, keeping you involved every step of the way.
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {workflowSteps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
-                variants={cardVariants}
-                className="h-full"
-              >
-                <Card className="bg-card h-full">
-                  <CardHeader>
-                    <CardTitle className="text-xl text-primary flex items-center"><span className="text-3xl font-bold text-accent mr-3">{i+1}</span> {step.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{step.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute left-4 top-0 h-full w-0.5 bg-border md:left-1/2 md:-translate-x-1/2"></div>
+            {workflowSteps.map((step, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <div key={i} className="mb-8 flex md:justify-between md:items-center w-full">
+                  {/* Left Side (Desktop) / Spacer (Mobile) */}
+                  <div className={`hidden md:block w-5/12 ${!isLeft ? 'order-1' : 'order-3'}`}></div>
+                  
+                  {/* Dot */}
+                  <div className="z-10 absolute left-4 md:left-1/2 -translate-x-1/2">
+                    <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-full shadow-lg">
+                      <span className="font-bold">{i + 1}</span>
+                    </div>
+                  </div>
+
+                  {/* Right Side / Content */}
+                  <motion.div
+                    className={`w-full pl-12 md:pl-0 md:w-5/12 ${isLeft ? 'order-3' : 'order-1'}`}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    variants={timelineItemVariants(isLeft)}
+                  >
+                    <div className={isLeft ? 'md:pl-8' : 'md:pr-8'}>
+                       <Card className="shadow-lg">
+                        <CardHeader>
+                          <CardTitle className="text-xl text-primary">{step.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground">{step.description}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </motion.section>
