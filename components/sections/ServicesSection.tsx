@@ -1,9 +1,9 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card';
-import { Button } from '@/src/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { LayoutGrid, TrendingUp, Cpu, Smartphone, ArrowRight, ShieldCheck, BarChart2, Cloud, BrainCircuit, BriefcaseBusiness, Settings2 } from 'lucide-react';
-import type { Service } from '@/src/lib/types';
+import type { Service } from '@/lib/types';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
