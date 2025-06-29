@@ -9,7 +9,7 @@ export default function HeroSection() {
     <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden -mt-20">
       <div className="absolute inset-0">
         <Image 
-          src="https://media.istockphoto.com/id/1363104929/photo/multi-ethnic-office-conference-room-indian-ceo-does-presentation-for-diverse-young.jpg" 
+          src="https://media.istockphoto.com/id/1363104929/photo/multi-ethnic-office-conference-room-indian-ceo-does-presentation-for-diverse-young.jpg?s=612x612&w=0&k=20&c=xMl3le4J8C91NphAHfvCCl8A68qjd1rHSIChVLni6VE=" 
           alt="Office conference room meeting" 
           fill
           objectFit="cover" 
