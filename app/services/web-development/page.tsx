@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,26 @@ import PageHeader from '@/components/shared/PageHeader';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import ContactForm from '@/components/sections/ContactForm';
+import { motion } from 'framer-motion';
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.4,
+      type: 'spring',
+      stiffness: 200
+    },
+  }),
+};
 
 const subServices = [
   { title: 'Frontend Development', description: 'Engaging user interfaces with React, Next.js, and modern UI/UX principles.' },
@@ -26,11 +47,20 @@ export default function WebDevelopmentPage() {
         description="We build modern, responsive, and secure web applications that drive user engagement and deliver exceptional business value. From sleek marketing sites to complex enterprise platforms, we bring your vision to life."
       />
 
-      {/* Overview Section */}
-      <section className="py-16 md:py-24 bg-background">
+      <motion.section 
+        className="py-16 md:py-24 bg-background"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={sectionVariants}
+      >
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative h-96 rounded-lg overflow-hidden shadow-xl">
+            <motion.div 
+              className="relative h-96 rounded-lg overflow-hidden shadow-xl"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
               <Image
                 src="https://placehold.co/600x450.png"
                 alt="Web development process"
@@ -38,7 +68,7 @@ export default function WebDevelopmentPage() {
                 objectFit="cover"
                 data-ai-hint="web development ui"
               />
-            </div>
+            </motion.div>
             <div>
               <h2 className="text-3xl font-bold text-primary mb-4">Custom Solutions for the Modern Web</h2>
               <p className="text-muted-foreground mb-6">
@@ -61,10 +91,15 @@ export default function WebDevelopmentPage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Sub-Services Section */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <motion.section 
+        className="py-16 md:py-24 bg-secondary"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionVariants}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary mb-4">Our Web Development Expertise</h2>
@@ -73,22 +108,37 @@ export default function WebDevelopmentPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {subServices.map((service) => (
-              <Card key={service.title} className="text-center bg-card">
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{service.description}</p>
-                </CardContent>
-              </Card>
+            {subServices.map((service, i) => (
+              <motion.div
+                key={service.title}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                variants={cardVariants}
+                className="h-full"
+              >
+                <Card className="text-center bg-card h-full">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-primary">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Case Studies Section */}
-      <section className="py-16 md:py-24 bg-background">
+      <motion.section 
+        className="py-16 md:py-24 bg-background"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionVariants}
+      >
         <div className="container mx-auto px-4">
            <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary mb-4">Related Case Studies</h2>
@@ -98,21 +148,28 @@ export default function WebDevelopmentPage() {
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {caseStudies.map((project) => (
-              <Card key={project.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="relative w-full h-60">
-                   <Image 
-                    src={project.imageUrl} 
-                    alt={project.title} 
-                    fill
-                    objectFit="cover"
-                    data-ai-hint={project.dataAiHint}
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">{project.title}</CardTitle>
-                  <p className="text-muted-foreground pt-2">{project.description}</p>
-                </CardHeader>
-              </Card>
+              <motion.div
+                key={project.id}
+                whileHover={{ y: -8 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="h-full"
+              >
+                <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
+                  <div className="relative w-full h-60">
+                     <Image 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      fill
+                      objectFit="cover"
+                      data-ai-hint={project.dataAiHint}
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="text-xl text-primary">{project.title}</CardTitle>
+                    <p className="text-muted-foreground pt-2">{project.description}</p>
+                  </CardHeader>
+                </Card>
+              </motion.div>
             ))}
           </div>
            <div className="text-center mt-12">
@@ -123,9 +180,8 @@ export default function WebDevelopmentPage() {
               </Button>
             </div>
         </div>
-      </section>
+      </motion.section>
       
-      {/* AI Recommendation Form */}
       <ContactForm />
     </>
   );

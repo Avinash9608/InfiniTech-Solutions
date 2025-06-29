@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from '../shared/ThemeToggle';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  // Services dropdown is handled separately
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/about', label: 'About Us' },
   { href: '/contact', label: 'Contact' },
@@ -43,7 +43,7 @@ export default function Header() {
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`transition-colors hover:text-primary ${isActive ? 'text-primary font-semibold' : isScrolled ? 'text-foreground' : 'text-card-foreground'}`}>
+      <Link href={href} className={`transition-colors hover:text-primary ${isActive ? 'text-primary font-semibold' : 'text-foreground'}`}>
         {children}
       </Link>
     );
@@ -52,7 +52,7 @@ export default function Header() {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-card shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
@@ -60,13 +60,12 @@ export default function Header() {
           InfiniTech
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           <NavLink href="/">Home</NavLink>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className={`transition-colors hover:text-primary px-0 hover:bg-transparent ${pathname.startsWith('/services') ? 'text-primary font-semibold' : isScrolled ? 'text-foreground' : 'text-card-foreground'}`}>
+              <Button variant="ghost" className={`transition-colors hover:text-primary px-0 hover:bg-transparent ${pathname.startsWith('/services') ? 'text-primary font-semibold' : 'text-foreground'}`}>
                 Services <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -83,21 +82,21 @@ export default function Header() {
           <NavLink href="/about">About Us</NavLink>
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-2">
           <Button asChild>
             <Link href="/contact">Contact Us</Link>
           </Button>
+          <ThemeToggle />
         </div>
 
-        {/* Mobile Navigation */}
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={isScrolled || pathname !== '/' ? 'text-primary' : 'text-primary-foreground'}>
+              <Button variant="ghost" size="icon" className={isScrolled ? 'text-primary' : 'text-primary-foreground'}>
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] bg-card p-6">
+            <SheetContent side="right" className="w-[280px] bg-card p-6 flex flex-col">
               <div className="flex justify-between items-center mb-8">
                 <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-primary">
                   InfiniTech
@@ -108,7 +107,7 @@ export default function Header() {
                   </Button>
                 </SheetClose>
               </div>
-              <nav className="flex flex-col space-y-4">
+              <nav className="flex flex-col space-y-4 flex-grow">
                 {navItems.map((item) => (
                   <SheetClose asChild key={item.label}>
                     <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
@@ -127,6 +126,9 @@ export default function Header() {
                   ))}
                  </div>
               </nav>
+               <div className="mt-auto flex justify-center">
+                 <ThemeToggle />
+               </div>
             </SheetContent>
           </Sheet>
         </div>

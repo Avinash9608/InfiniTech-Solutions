@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import type { Project } from '@/lib/types';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const allProjects: Project[] = [
   { id: '1', title: 'E-commerce Platform', description: 'A full-featured online store for a fashion brand.', imageUrl: 'https://placehold.co/600x400.png', category: 'Web', dataAiHint: 'ecommerce fashion' },
@@ -63,28 +64,35 @@ export default function PortfolioSection({ summary = false }: PortfolioSectionPr
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <Card key={project.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg flex flex-col">
-                <div className="relative w-full h-60">
-                  <Image 
-                    src={project.imageUrl} 
-                    alt={project.title} 
-                    fill 
-                    objectFit="cover"
-                    data-ai-hint={project.dataAiHint || project.category.toLowerCase()}
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-primary">{project.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription className="text-muted-foreground">{project.description}</CardDescription>
-                </CardContent>
-                <CardFooter>
-                   <Button variant="link" className="text-primary p-0 group">
-                    View Case Study <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </CardFooter>
-              </Card>
+              <motion.div
+                key={project.id}
+                whileHover={{ y: -8 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="h-full"
+              >
+                <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg flex flex-col h-full">
+                  <div className="relative w-full h-60">
+                    <Image 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      fill 
+                      objectFit="cover"
+                      data-ai-hint={project.dataAiHint || project.category.toLowerCase()}
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="text-xl font-semibold text-primary">{project.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardDescription className="text-muted-foreground">{project.description}</CardDescription>
+                  </CardContent>
+                  <CardFooter>
+                     <Button variant="link" className="text-primary p-0 group">
+                      View Case Study <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
             ))}
           </div>
         )}

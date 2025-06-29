@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { LayoutGrid, TrendingUp, Cpu, Smartphone, ArrowRight, ShieldCheck, BarChart2, Cloud, BrainCircuit, BriefcaseBusiness, Settings2 } from 'lucide-react';
 import type { Service } from '@/lib/types';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const servicesData: Omit<Service, 'details' | 'subServices' | 'caseStudies'>[] = [
   {
@@ -84,22 +85,29 @@ export default function ServicesSection({ showTitle = false }: ServicesSectionPr
         )}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {servicesData.map((service) => (
-            <Card key={service.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-              <CardHeader className="bg-card p-6">
-                <div className="flex items-center space-x-4">
-                   <service.icon className="w-10 h-10 text-primary" />
-                   <CardTitle className="text-xl font-semibold text-primary">{service.title}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow p-6 flex flex-col">
-                <CardDescription className="text-muted-foreground mb-4 flex-grow">{service.description}</CardDescription>
-                <Button asChild variant="outline" className="mt-auto w-full group">
-                  <Link href={service.href}>
-                    Learn More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+            <motion.div
+              key={service.id}
+              whileHover={{ y: -8 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className="h-full"
+            >
+              <Card className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden h-full">
+                <CardHeader className="bg-card p-6">
+                  <div className="flex items-center space-x-4">
+                     <service.icon className="w-10 h-10 text-primary" />
+                     <CardTitle className="text-xl font-semibold text-primary">{service.title}</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-grow p-6 flex flex-col">
+                  <CardDescription className="text-muted-foreground mb-4 flex-grow">{service.description}</CardDescription>
+                  <Button asChild variant="outline" className="mt-auto w-full group">
+                    <Link href={service.href}>
+                      Learn More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>
