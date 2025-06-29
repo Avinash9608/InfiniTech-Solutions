@@ -4,15 +4,15 @@ import { useState, useTransition } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Textarea } from '@/src/components/ui/textarea';
-import { Label } from '@/src/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, CheckCircle, AlertCircle, Lightbulb } from 'lucide-react';
-import { generateItSolutions } from '@/src/ai/flows/generate-it-solutions';
-import { useToast } from "@/src/hooks/use-toast";
+import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
+import { useToast } from "@/hooks/use-toast";
 
 
 const contactFormSchema = z.object({

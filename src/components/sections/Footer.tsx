@@ -1,13 +1,16 @@
 "use client";
 import Link from 'next/link';
-import { Linkedin, Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Linkedin, Facebook, Instagram, Twitter, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const footerNavItems = [
-  { href: '#hero', label: 'Home' },
-  { href: '#services', label: 'Services' },
-  { href: '#portfolio', label: 'Portfolio' },
-  { href: '#why-us', label: 'About Us' }, // Linking Why Us as About
-  { href: '#contact', label: 'Contact' },
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/portfolio', label: 'Portfolio' },
+  { href: '/about', label: 'About Us' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const socialLinks = [
@@ -19,16 +22,31 @@ const socialLinks = [
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   return (
-    <footer className="bg-card border-t border-border py-12 text-card-foreground">
+    <footer className="bg-card border-t border-border py-12 text-card-foreground relative">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* About Company */}
           <div>
             <h3 className="text-xl font-bold text-primary mb-4">InfiniTech Solutions</h3>
             <p className="text-sm text-muted-foreground">
@@ -36,13 +54,12 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="text-lg font-semibold text-primary mb-4">Quick Links</h4>
             <ul className="space-y-2">
               {footerNavItems.map(item => (
                 <li key={item.label}>
-                  <Link href={item.href} onClick={(e) => scrollToSection(e, item.href)} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     {item.label}
                   </Link>
                 </li>
@@ -50,7 +67,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 className="text-lg font-semibold text-primary mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm">
@@ -69,7 +85,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Social Media */}
           <div>
             <h4 className="text-lg font-semibold text-primary mb-4">Follow Us</h4>
             <div className="flex space-x-4">
@@ -98,6 +113,26 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-8 right-8 z-50"
+          >
+            <Button
+              onClick={scrollToTop}
+              className="h-12 w-12 rounded-full shadow-lg"
+              size="icon"
+            >
+              <ArrowUp className="h-6 w-6" />
+              <span className="sr-only">Go to top</span>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 }

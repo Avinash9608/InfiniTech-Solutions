@@ -1,6 +1,8 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, HeartHandshake, BadgeDollarSign, Clock, RefreshCcw, Zap } from 'lucide-react';
 import type { USP } from '@/lib/types';
+import { motion } from 'framer-motion';
 
 const uspData: USP[] = [
   {
@@ -53,17 +55,24 @@ export default function WhyChooseUsSection() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {uspData.map((item) => (
-            <Card key={item.id} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg">
-              <CardHeader className="pb-4">
-                <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-accent/20 text-accent mb-4">
-                  <item.icon className="w-8 h-8" />
-                </div>
-                <CardTitle className="text-xl font-semibold text-primary">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{item.description}</p>
-              </CardContent>
-            </Card>
+            <motion.div
+              key={item.id}
+              whileHover={{ y: -8 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className="h-full"
+            >
+              <Card className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg h-full">
+                <CardHeader className="pb-4">
+                  <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-accent/20 text-accent mb-4">
+                    <item.icon className="w-8 h-8" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-primary">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>

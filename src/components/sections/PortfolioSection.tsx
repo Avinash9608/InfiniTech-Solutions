@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Project } from '@/lib/types';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const allProjects: Project[] = [
   { id: '1', title: 'E-commerce Platform', description: 'A full-featured online store for a fashion brand.', imageUrl: 'https://placehold.co/600x400.png', category: 'Web', dataAiHint: 'ecommerce fashion' },
@@ -15,14 +17,21 @@ const allProjects: Project[] = [
   { id: '4', title: 'CRM Software', description: 'Custom CRM solution for managing client relationships.', imageUrl: 'https://placehold.co/600x400.png', category: 'Software', dataAiHint: 'crm dashboard' },
   { id: '5', title: 'Restaurant Booking System', description: 'Web application for online table reservations.', imageUrl: 'https://placehold.co/600x400.png', category: 'Web', dataAiHint: 'restaurant booking' },
   { id: '6', title: 'Fitness Tracker App', description: 'Mobile app to monitor workouts and health metrics.', imageUrl: 'https://placehold.co/600x400.png', category: 'App', dataAiHint: 'fitness tracker' },
+  { id: '7', title: 'Cybersecurity Audit', description: 'Comprehensive security audit for a financial firm.', imageUrl: 'https://placehold.co/600x400.png', category: 'Cybersecurity', dataAiHint: 'cybersecurity server' },
+  { id: '8', title: 'Cloud Migration', description: 'Migrated on-premise infrastructure to AWS for a large enterprise.', imageUrl: 'https://placehold.co/600x400.png', category: 'Cloud', dataAiHint: 'cloud infrastructure' },
 ];
 
-const categories: Project['category'][] = ['Web', 'App', 'Marketing', 'Software'];
+const categories: Project['category'][] = ['Web', 'App', 'Marketing', 'Software', 'Cybersecurity', 'Cloud'];
 
-export default function PortfolioSection() {
+interface PortfolioSectionProps {
+  summary?: boolean;
+}
+
+export default function PortfolioSection({ summary = false }: PortfolioSectionProps) {
   const [filter, setFilter] = useState<Project['category'] | 'All'>('All');
 
-  const filteredProjects = filter === 'All' ? allProjects : allProjects.filter(p => p.category === filter);
+  const projectsToShow = summary ? allProjects.slice(0, 3) : allProjects;
+  const filteredProjects = filter === 'All' ? projectsToShow : projectsToShow.filter(p => p.category === filter);
 
   return (
     <section id="portfolio" className="py-16 md:py-24 bg-background">
@@ -34,56 +43,67 @@ export default function PortfolioSection() {
           </p>
         </div>
 
-        <div className="flex justify-center mb-8">
-          <Select value={filter} onValueChange={(value: Project['category'] | 'All') => setFilter(value)}>
-            <SelectTrigger className="w-[180px] bg-card shadow">
-              <SelectValue placeholder="Filter by category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All Categories</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {!summary && (
+          <div className="flex justify-center mb-8">
+            <Select value={filter} onValueChange={(value: Project['category'] | 'All') => setFilter(value)}>
+              <SelectTrigger className="w-[180px] bg-card shadow">
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All Categories</SelectItem>
+                {categories.map(category => (
+                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {filteredProjects.length === 0 ? (
           <p className="text-center text-muted-foreground text-lg">No projects found for this category.</p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <Card key={project.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg flex flex-col">
-                <div className="relative w-full h-60">
-                  <Image 
-                    src={project.imageUrl} 
-                    alt={project.title} 
-                    fill 
-                    className="object-cover"
-                    data-ai-hint={project.dataAiHint || project.category.toLowerCase()}
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-primary">{project.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription className="text-muted-foreground">{project.description}</CardDescription>
-                </CardContent>
-                <CardFooter>
-                   <Button variant="link" className="text-primary p-0 group">
-                    View Case Study <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </CardFooter>
-              </Card>
+              <motion.div
+                key={project.id}
+                whileHover={{ y: -8 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="h-full"
+              >
+                <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg flex flex-col h-full">
+                  <div className="relative w-full h-60">
+                    <Image 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      fill 
+                      className="object-cover"
+                      data-ai-hint={project.dataAiHint || project.category.toLowerCase()}
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="text-xl font-semibold text-primary">{project.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardDescription className="text-muted-foreground">{project.description}</CardDescription>
+                  </CardContent>
+                  <CardFooter>
+                     <Button variant="link" className="text-primary p-0 group">
+                      View Case Study <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
             ))}
           </div>
         )}
 
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground">
-            View All Projects
-          </Button>
-        </div>
+        {summary && (
+          <div className="text-center mt-12">
+            <Button size="lg" variant="outline" asChild className="text-primary border-primary hover:bg-primary hover:text-primary-foreground">
+              <Link href="/portfolio">View All Projects</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
