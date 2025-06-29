@@ -1,3 +1,5 @@
+"use client";
+
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import PageHeader from "@/components/shared/PageHeader";
 import StatsSection from "@/components/sections/StatsSection";
