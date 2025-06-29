@@ -7,7 +7,6 @@ import { Button } from '@/src/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/src/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/src/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from '../shared/ThemeToggle';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -86,7 +85,6 @@ export default function Header() {
           <Button asChild>
             <Link href="/contact">Contact Us</Link>
           </Button>
-          <ThemeToggle />
         </div>
 
         <div className="md:hidden">
@@ -126,9 +124,6 @@ export default function Header() {
                   ))}
                  </div>
               </nav>
-               <div className="mt-auto flex justify-center">
-                 <ThemeToggle />
-               </div>
             </SheetContent>
           </Sheet>
         </div>

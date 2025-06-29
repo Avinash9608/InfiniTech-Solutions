@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 210 20% 90%; /* Light Gray #E0E5EB */
-    --foreground: 225 10% 10%; /* Dark Gray for text */
+    --background: 0 0% 100%;
+    --foreground: 231 100% 8%;
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 225 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 231 100% 8%;
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 225 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 231 100% 8%;
 
-    --primary: 225 62% 35%; /* Dark Blue #224292 */
-    --primary-foreground: 210 40% 98%; /* Light color for text on primary */
+    --primary: 231 61% 22%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%; /* Lighter gray for secondary elements */
-    --secondary-foreground: 225 10% 10%;
+    --secondary: 37 100% 68%;
+    --secondary-foreground: 231 100% 8%;
 
-    --muted: 210 15% 65%;
-    --muted-foreground: 210 10% 45%; /* For less important text */
+    --muted: 240 13% 62%;
+    --muted-foreground: 240 9% 53%;
 
-    --accent: 56 86% 67%; /* Yellow #F2E762 */
-    --accent-foreground: 56 60% 20%; /* Dark text on accent */
+    --accent: 2 100% 69%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 342 90% 61%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 210 15% 80%;
-    --input: 0 0% 100%; /* White input background */
-    --ring: 225 62% 45%; /* Brighter blue for focus rings */
+    --border: 0 0% 92%;
+    --input: 0 0% 100%;
+    --ring: 231 61% 22%;
 
     --radius: 0.5rem;
 
@@ -49,51 +49,6 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
-  .dark {
-    --background: 225 10% 10%;
-    --foreground: 210 20% 90%;
-
-    --card: 225 10% 15%;
-    --card-foreground: 210 20% 90%;
-
-    --popover: 225 10% 15%;
-    --popover-foreground: 210 20% 90%;
-
-    --primary: 225 62% 55%;
-    --primary-foreground: 225 62% 15%;
-
-    --secondary: 225 10% 20%;
-    --secondary-foreground: 210 20% 90%;
-
-    --muted: 225 10% 30%;
-    --muted-foreground: 210 15% 65%;
-
-    --accent: 56 86% 57%;
-    --accent-foreground: 56 80% 10%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 225 10% 25%;
-    --input: 225 10% 20%;
-    --ring: 225 62% 65%;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
 }
 
 @layer base {
@@ -102,6 +57,5 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* font-family is set by Tailwind utility class font-body in layout.tsx */
   }
 }
