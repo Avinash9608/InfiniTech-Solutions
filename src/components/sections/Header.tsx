@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -89,9 +90,12 @@ export default function Header() {
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`${navLinkClasses(isActive)} relative group`}>
+      <Link href={href} className={`${navLinkClasses(isActive)} relative group py-2`}>
         {children}
-        <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out group-hover:scale-x-100 ${isActive ? 'scale-x-100' : 'scale-x-0'}`} />
+        <span className={cn(
+            "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
+            !isActive && "group-hover:scale-x-100"
+        )} />
       </Link>
     );
   };
@@ -129,9 +133,12 @@ export default function Header() {
           <motion.div variants={itemVariants}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent relative group`}>
+                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent relative group py-2`}>
                   Services <ChevronDown className="ml-1 h-4 w-4" />
-                  <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out group-hover:scale-x-100 ${pathname.startsWith('/services') ? 'scale-x-100' : 'scale-x-0'}`} />
+                   <span className={cn(
+                      "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
+                      !pathname.startsWith('/services') && "group-hover:scale-x-100"
+                   )} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
