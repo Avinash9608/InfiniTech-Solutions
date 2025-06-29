@@ -16,7 +16,6 @@ export default function HeroSection() {
           quality={80}
           priority
         />
-        {/* Added a dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
       <div className="relative z-10 p-8 max-w-3xl mx-auto">
