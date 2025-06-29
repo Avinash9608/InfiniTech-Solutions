@@ -98,11 +98,11 @@ export default function AiMlPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1406&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="AI and robotics concept"
                 fill
                 className="object-cover"
-                data-ai-hint="ai robotics"
+                data-ai-hint="ai network"
               />
             </motion.div>
           </div>
@@ -200,11 +200,11 @@ export default function AiMlPage() {
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1406&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Abstract AI network"
                 fill
                 className="object-cover"
-                data-ai-hint="ai network"
+                data-ai-hint="ai robotics"
               />
             </motion.div>
           <div>
@@ -280,3 +280,5 @@ export default function AiMlPage() {
     </>
   );
 }
+
+    
