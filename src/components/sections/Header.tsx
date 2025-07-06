@@ -84,13 +84,13 @@ export default function Header() {
     const scrolledState = isScrolled ? 'text-foreground' : 'text-primary-foreground';
     const activeState = isScrolled ? 'text-primary font-semibold' : 'text-primary-foreground font-semibold';
     
-    return `${base} ${isActive ? activeState : scrolledState}`;
+    return cn(base, isActive ? activeState : scrolledState);
   };
 
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`${navLinkClasses(isActive)} relative group py-2`}>
+      <Link href={href} className={cn(navLinkClasses(isActive), "relative group py-2")}>
         {children}
         <span className={cn(
             "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
@@ -102,7 +102,10 @@ export default function Header() {
   
   return (
     <motion.header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300', 
+        isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+      )}
       variants={headerVariants}
       initial="hidden"
       animate="visible"
@@ -110,7 +113,7 @@ export default function Header() {
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <MotionLink
           href="/"
-          className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}
+          className={cn('text-2xl font-bold transition-colors', isScrolled ? 'text-primary' : 'text-primary-foreground')}
           variants={itemVariants}
         >
           InfiniTech
@@ -133,7 +136,7 @@ export default function Header() {
           <motion.div variants={itemVariants}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent relative group py-2`}>
+                <Button variant="ghost" className={cn(navLinkClasses(pathname.startsWith('/services')), "px-0 hover:bg-transparent relative group py-2")}>
                   Services <ChevronDown className="ml-1 h-4 w-4" />
                    <span className={cn(
                       "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
@@ -170,7 +173,7 @@ export default function Header() {
           <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={isScrolled ? 'text-foreground' : 'text-primary-foreground'}>
+              <Button variant="ghost" size="icon" className={cn(isScrolled ? 'text-foreground' : 'text-primary-foreground')}>
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
