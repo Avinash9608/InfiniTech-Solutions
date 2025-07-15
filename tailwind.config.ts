@@ -8,7 +8,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        body: ['Lora', 'serif'],
+        heading: ['Playfair Display', 'serif'],
+        mono: ['Libertinus Mono', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
