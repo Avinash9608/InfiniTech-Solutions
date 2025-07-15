@@ -8,9 +8,9 @@ import '@/styles/ImageSliderHero.css';
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=1920&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1603201667141-5a2d4c673378?w=1920&auto=format&fit=crop&q=80",
     text: "Pioneering Web Solutions",
-    dataAiHint: "abstract technology"
+    dataAiHint: "it company"
   },
   {
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1920&auto=format&fit=crop&q=80",
@@ -29,34 +29,24 @@ const slides = [
   }
 ];
 
-const imageVariants = {
+const slideVariants = {
   enter: {
+    x: '100%',
     opacity: 0,
-    scale: 1.05,
   },
   center: {
+    x: 0,
     opacity: 1,
-    scale: 1,
   },
   exit: {
+    x: '-100%',
     opacity: 0,
-    scale: 1.05,
   },
 };
 
-const textVariants = {
-  enter: {
-    opacity: 0,
-    y: 20,
-  },
-  center: {
-    opacity: 1,
-    y: 0,
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-  },
+const transition = {
+  x: { type: "spring", stiffness: 300, damping: 30 },
+  opacity: { duration: 0.5 }
 };
 
 export default function HeroSection() {
@@ -72,18 +62,15 @@ export default function HeroSection() {
 
   return (
     <section className="hero-slider">
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={index}
           className="hero-slide"
-          variants={imageVariants}
+          variants={slideVariants}
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            opacity: { duration: 1.5, ease: "easeInOut" },
-            scale: { duration: 1.5, ease: "easeInOut" }
-          }}
+          transition={transition}
         >
           <Image
             src={slides[index].image}
@@ -102,11 +89,11 @@ export default function HeroSection() {
             <motion.h1
               key={index}
               className="text-5xl md:text-7xl font-extrabold text-primary-foreground mb-6"
-              variants={textVariants}
+              variants={slideVariants}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={transition}
             >
               {slides[index].text}
             </motion.h1>
@@ -114,7 +101,7 @@ export default function HeroSection() {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
             className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto"
           >
             We build digital experiences that drive growth, engagement, and success for your business.
@@ -122,7 +109,7 @@ export default function HeroSection() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
             className="space-x-4"
           >
             <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
