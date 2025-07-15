@@ -76,9 +76,15 @@ export default function ServicesSection({ showTitle = false }: ServicesSectionPr
     <section id="services" className="py-16 md:py-24 bg-secondary">
       <div className="container mx-auto px-4">
         {showTitle && (
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-primary mb-4">Our Core Services</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-sm font-bold tracking-wider uppercase text-primary">
+              Services
+            </span>
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mt-2 mb-4">
+              Our Core Services
+            </h2>
+            <div className="w-24 h-1 bg-accent mx-auto mb-6"></div>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               We offer a comprehensive suite of IT services designed to empower your business and drive success in the digital landscape.
             </p>
           </div>
