@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -63,6 +64,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { theme } = useTheme();
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -83,6 +85,11 @@ export default function Header() {
     const base = 'transition-colors hover:text-primary';
     const scrolledState = isScrolled ? 'text-foreground' : 'text-primary-foreground';
     const activeState = isScrolled ? 'text-primary font-semibold' : 'text-primary-foreground font-semibold';
+    
+    // In dark mode on the homepage (unscrolled), force text to be white/light
+    if (!isScrolled && theme === 'dark') {
+      return cn(base, 'text-primary-foreground', isActive && 'font-semibold');
+    }
     
     return cn(base, isActive ? activeState : scrolledState);
   };
@@ -113,7 +120,7 @@ export default function Header() {
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <MotionLink
           href="/"
-          className={cn('text-2xl font-bold transition-colors', isScrolled ? 'text-primary' : 'text-primary-foreground')}
+          className={cn('text-2xl font-bold transition-colors', (isScrolled || theme === 'light') ? 'text-primary' : 'text-primary-foreground')}
           variants={itemVariants}
         >
           InfiniTech
@@ -173,7 +180,7 @@ export default function Header() {
           <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={cn(isScrolled ? 'text-foreground' : 'text-primary-foreground')}>
+              <Button variant="ghost" size="icon" className={cn((isScrolled || theme === 'light') ? 'text-foreground' : 'text-primary-foreground')}>
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
