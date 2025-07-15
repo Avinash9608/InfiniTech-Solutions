@@ -5,6 +5,7 @@ export interface IContact extends Document {
   email: string;
   phone?: string;
   projectDetails: string;
+  replied: boolean;
   createdAt: Date;
 }
 
@@ -25,6 +26,10 @@ const ContactSchema: Schema<IContact> = new Schema({
   projectDetails: {
     type: String,
     required: [true, 'Please provide your project details.'],
+  },
+  replied: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,
