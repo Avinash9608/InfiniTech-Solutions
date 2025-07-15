@@ -20,19 +20,11 @@ const RobotIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
       {...props}
     >
-      <path d="M12 8V4H8" />
-      <rect width="16" height="12" x="4" y="8" rx="2" />
-      <path d="M2 14h2" />
-      <path d="M20 14h2" />
-      <path d="M15 13v2" />
-      <path d="M9 13v2" />
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity="0.3"/>
+      <path d="M12,4C7.58,4,4,7.58,4,12s3.58,8,8,8,8-3.58,8-8S16.42,4,12,4Zm0,14c-3.31,0-6-2.69-6-6s2.69-6,6-6,6,2.69,6,6S15.31,18,12,18ZM9,13.5c.83,0,1.5-0.67,1.5-1.5S9.83,10.5,9,10.5,7.5,11.17,7.5,12,8.17,13.5,9,13.5Zm6,0c.83,0,1.5-0.67,1.5-1.5S15.83,10.5,15,10.5s-1.5,0.67-1.5,1.5,0.67,1.5,1.5,1.5Z"/>
     </svg>
   );
 
