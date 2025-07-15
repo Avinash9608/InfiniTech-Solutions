@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isClient, setIsClient] = useState(false);
   const searchParams = useSearchParams();
   const providedSecret = searchParams.get('secret');
-  const adminSecret = process.env.ADMIN_SECRET;
+  const adminSecret = process.env.NEXT_PUBLIC_ADMIN_SECRET;
 
   useEffect(() => {
     setIsClient(true);
