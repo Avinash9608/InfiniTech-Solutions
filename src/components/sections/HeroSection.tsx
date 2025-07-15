@@ -102,7 +102,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                className="text-lg md:text-xl text-primary/80 max-w-lg"
+                className="text-lg md:text-xl text-foreground/80 max-w-lg"
             >
                 We build digital experiences that drive growth, engagement, and success for your business.
             </motion.p>
