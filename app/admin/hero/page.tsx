@@ -5,18 +5,17 @@ import HeroContent, { IHeroContent } from '@/models/HeroContent';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Bot, Tag, Image as ImageIcon } from 'lucide-react';
 import { HeroAdminDashboard } from '@/components/sections/HeroAdminDashboard';
+import { initialSlides, initialTaglines } from '@/lib/initialData';
 
 async function getHeroContent() {
   await dbConnect();
   let content = await HeroContent.findOne().lean();
 
   if (!content) {
-    // Create default content if it doesn't exist
+    // If no content exists, create it with the initial static data
     content = await HeroContent.create({
-      taglines: ["Default Tagline 1", "Default Tagline 2"],
-      slides: [
-        { image: "https://placehold.co/600x400.png", text: "Default Slide 1", dataAiHint: "default" }
-      ]
+      taglines: initialTaglines,
+      slides: initialSlides
     });
     content = content.toObject();
   }
