@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -8,30 +9,50 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
+import { IHeaderContent } from '@/models/HeaderContent';
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/portfolio', label: 'Portfolio' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
-];
+const defaultHeaderContent: IHeaderContent = {
+  logoText: 'InfiniTech',
+  navLinks: [
+    { href: '/', label: 'Home' },
+    { href: '/portfolio', label: 'Portfolio' },
+    { href: '/about', label: 'About Us' },
+  ],
+  serviceLinks: [
+    { href: '/services/web-development', label: 'Web Development' },
+    { href: '/services/cybersecurity', label: 'Cybersecurity' },
+    { href: '/services/data-analytics', label: 'Data Analytics' },
+    { href: '/services/cloud-services', label: 'Cloud Services' },
+    { href: '/services/ai-ml', label: 'AI & ML' },
+    { href: '/services/it-consulting', label: 'IT Consulting' },
+    { href: '/services/managed-services', label: 'Managed Services' },
+    { href: '/services/digital-marketing', label: 'Digital Marketing' },
+  ],
+  ctaButton: { href: '/contact', label: 'Contact Us' },
+} as IHeaderContent;
 
-const serviceItems = [
-  { href: '/services/web-development', label: 'Web Development' },
-  { href: '/services/cybersecurity', label: 'Cybersecurity' },
-  { href: '/services/data-analytics', label: 'Data Analytics' },
-  { href: '/services/cloud-services', label: 'Cloud Services' },
-  { href: '/services/ai-ml', label: 'AI & ML' },
-  { href: '/services/it-consulting', label: 'IT Consulting' },
-  { href: '/services/managed-services', label: 'Managed Services' },
-  { href: '/services/digital-marketing', label: 'Digital Marketing' },
-];
 
 export default function Header() {
+  const [content, setContent] = useState<IHeaderContent>(defaultHeaderContent);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+
+  useEffect(() => {
+    async function fetchHeaderContent() {
+      try {
+        const res = await fetch('/api/admin/header');
+        if (res.ok) {
+          const data = await res.json();
+          setContent(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch header content", error);
+      }
+    }
+    fetchHeaderContent();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +61,7 @@ export default function Header() {
 
     if (isHomePage) {
       window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll(); // Check on initial render
+      handleScroll();
       return () => window.removeEventListener('scroll', handleScroll);
     } else {
       setIsScrolled(true);
@@ -70,11 +91,11 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <Link href="/" className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}>
-          InfiniTech
+          {content.logoText}
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
-          <NavLink href="/">Home</NavLink>
+          {content.navLinks.map(link => <NavLink key={link.href} href={link.href}>{link.label}</NavLink>)}
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -83,21 +104,18 @@ export default function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {serviceItems.map((item) => (
+              {content.serviceLinks.map((item) => (
                 <DropdownMenuItem key={item.label} asChild>
                   <Link href={item.href}>{item.label}</Link>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <NavLink href="/portfolio">Portfolio</NavLink>
-          <NavLink href="/about">About Us</NavLink>
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
           <Button asChild>
-            <Link href="/contact">Contact Us</Link>
+            <Link href={content.ctaButton.href}>{content.ctaButton.label}</Link>
           </Button>
           <ThemeToggle />
         </div>
@@ -113,7 +131,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[280px] bg-card p-6 flex flex-col">
               <div className="flex justify-between items-center mb-8">
                 <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-bold text-primary">
-                  InfiniTech
+                  {content.logoText}
                 </Link>
                 <SheetClose asChild>
                    <Button variant="ghost" size="icon">
@@ -122,7 +140,7 @@ export default function Header() {
                 </SheetClose>
               </div>
               <nav className="flex flex-col space-y-4 flex-grow">
-                {navItems.map((item) => (
+                {[...content.navLinks, { href: content.ctaButton.href, label: content.ctaButton.label }].map((item) => (
                   <SheetClose asChild key={item.label}>
                     <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
                       {item.label}
@@ -131,7 +149,7 @@ export default function Header() {
                 ))}
                  <p className="text-lg text-foreground py-2">Services</p>
                  <div className="flex flex-col space-y-3 pl-4">
-                  {serviceItems.map((item) => (
+                  {content.serviceLinks.map((item) => (
                     <SheetClose asChild key={item.label}>
                       <Link href={item.href} className="text-md text-muted-foreground hover:text-primary transition-colors">
                         {item.label}

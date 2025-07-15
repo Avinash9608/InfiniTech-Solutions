@@ -2,7 +2,7 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { Home, Mail, Settings, ShieldAlert, Bot, LayoutDashboard } from 'lucide-react';
+import { Home, Mail, Settings, ShieldAlert, Bot, LayoutDashboard, LayoutTemplate, CornerDownLeft } from 'lucide-react';
 import Sidebar from '@/components/admin/Sidebar';
 import Header from '@/components/admin/Header';
 import { useState, useEffect } from 'react';
@@ -22,10 +22,12 @@ const navItems: NavItem[] = [
     },
     { 
       href: '/admin/hero', // Parent link defaults to first child
-      label: 'Home', 
+      label: 'Home Page', 
       icon: Home,
       children: [
-        { href: '/admin/hero', label: 'Hero Section', icon: Bot }
+        { href: '/admin/hero', label: 'Hero Section', icon: Bot },
+        { href: '/admin/header', label: 'Header', icon: LayoutTemplate },
+        { href: '/admin/footer', label: 'Footer', icon: CornerDownLeft },
       ]
     },
     { href: '/admin/inbox', label: 'Inbox', icon: Mail },
