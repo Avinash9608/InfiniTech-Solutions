@@ -97,7 +97,7 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
           {contacts.map((contact) => (
             <TableRow key={contact._id}>
               <TableCell className="font-medium text-xs">
-                {new Date(contact.createdAt).toLocaleDateString()}
+                {new Date(contact.createdAt).toLocaleDateString('en-CA')}
               </TableCell>
               <TableCell>{contact.name}</TableCell>
               <TableCell>{contact.email}</TableCell>
