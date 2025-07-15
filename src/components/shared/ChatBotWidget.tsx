@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Bot, X, Send, Loader2 } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { chatFlow } from '@/ai/flows/chat-flow';
 
@@ -15,6 +15,27 @@ type Message = {
   role: 'user' | 'bot';
   text: string;
 };
+
+const RobotIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M12 8V4H8" />
+      <rect width="16" height="12" x="4" y="8" rx="2" />
+      <path d="M2 14h2" />
+      <path d="M20 14h2" />
+      <path d="M15 13v2" />
+      <path d="M9 13v2" />
+    </svg>
+  );
+
 
 export default function ChatBotWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,7 +112,7 @@ export default function ChatBotWidget() {
           >
             <header className="p-4 border-b flex justify-between items-center bg-primary text-primary-foreground rounded-t-lg">
               <div className="flex items-center gap-3">
-                <Bot className="w-6 h-6" />
+                <RobotIcon className="w-6 h-6" />
                 <h3 className="font-semibold text-lg">Support Bot</h3>
               </div>
               <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground">
@@ -104,8 +125,8 @@ export default function ChatBotWidget() {
                 {messages.map((message, index) => (
                   <div key={index} className={cn('flex items-end gap-2', message.role === 'user' ? 'justify-end' : 'justify-start')}>
                     {message.role === 'bot' && (
-                      <Avatar className="w-8 h-8">
-                        <AvatarFallback><Bot size={20} /></AvatarFallback>
+                      <Avatar className="w-8 h-8 bg-muted">
+                        <AvatarFallback><RobotIcon className="w-5 h-5 text-muted-foreground" /></AvatarFallback>
                       </Avatar>
                     )}
                     <div
@@ -122,8 +143,8 @@ export default function ChatBotWidget() {
                 ))}
                 {isLoading && (
                    <div className="flex items-end gap-2 justify-start">
-                        <Avatar className="w-8 h-8">
-                            <AvatarFallback><Bot size={20} /></AvatarFallback>
+                        <Avatar className="w-8 h-8 bg-muted">
+                            <AvatarFallback><RobotIcon className="w-5 h-5 text-muted-foreground" /></AvatarFallback>
                         </Avatar>
                         <div className="p-3 rounded-lg bg-secondary text-secondary-foreground shadow rounded-bl-none flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full bg-muted-foreground animate-pulse delay-0"></span>
@@ -159,7 +180,7 @@ export default function ChatBotWidget() {
         className="fixed bottom-5 right-5 z-50"
       >
         <Button size="icon" className="w-16 h-16 rounded-full shadow-2xl" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X className="w-8 h-8" /> : <Bot className="w-8 h-8" />}
+          {isOpen ? <X className="w-8 h-8" /> : <RobotIcon className="w-8 h-8" />}
         </Button>
       </motion.div>
     </>
