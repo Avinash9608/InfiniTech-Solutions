@@ -1,9 +1,10 @@
 "use client";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import '@/styles/ImageSliderHero.css';
+import '@/styles/NewHero.css';
+import { useEffect, useState } from 'react';
 
 const slides = [
   {
@@ -28,6 +29,13 @@ const slides = [
   }
 ];
 
+const taglines = [
+    "Pioneering Your Digital Future",
+    "Building Tomorrow's Technology",
+    "Innovate, Create, Elevate",
+    "Your Vision, Engineered"
+]
+
 const marqueeVariants = {
   animate: {
     x: ['0%', '-100%'],
@@ -35,7 +43,7 @@ const marqueeVariants = {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 40, // Adjust duration for speed
+        duration: 40,
         ease: 'linear',
       },
     },
@@ -43,9 +51,19 @@ const marqueeVariants = {
 };
 
 export default function HeroSection() {
+    const [currentTagline, setCurrentTagline] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTagline((prev) => (prev + 1) % taglines.length);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, []);
+
+
   return (
-    <section className="hero-slider">
-      <div className="hero-marquee-container">
+    <section className="hero-container">
+      <div className="hero-background-marquee">
         <motion.div
           className="hero-marquee-track"
           variants={marqueeVariants}
@@ -65,39 +83,48 @@ export default function HeroSection() {
           ))}
         </motion.div>
       </div>
-      <div className="hero-overlay" />
-      <div className="hero-content">
-        <div className="text-center">
-            <motion.h1
-              className="text-5xl md:text-7xl font-extrabold text-primary-foreground mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+      
+      <div className="hero-content-split">
+         <div className="hero-text-content">
+            <AnimatePresence mode="wait">
+                <motion.h1
+                    key={currentTagline}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="text-5xl md:text-6xl font-extrabold text-primary-foreground mb-6"
+                >
+                    {taglines[currentTagline]}
+                </motion.h1>
+            </AnimatePresence>
+            <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                className="text-lg md:text-xl text-primary-foreground/80 max-w-lg"
             >
-              Pioneering Your Digital Future
-            </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto"
-          >
-            We build digital experiences that drive growth, engagement, and success for your business.
-          </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="space-x-4"
-          >
-            <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
-              <Link href="/contact">Get Started</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary shadow-lg transform hover:scale-105 transition-transform duration-300">
-              <Link href="/services">Our Services</Link>
-            </Button>
-          </motion.div>
+                We build digital experiences that drive growth, engagement, and success for your business.
+            </motion.p>
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+          className="hero-buttons-container"
+        >
+          <Link href="/contact" className="ui-btn">
+            <span>
+              Get Started
+            </span>
+          </Link>
+          <Link href="/services" className="ui-btn">
+             <span>
+              Our Services
+            </span>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
