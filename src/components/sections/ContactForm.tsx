@@ -9,12 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, CheckCircle, AlertCircle, Lightbulb } from 'lucide-react';
-import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
+import { Loader2, AlertCircle, Sparkles, Wand2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-
+import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
+import { motion } from 'framer-motion';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -45,7 +45,6 @@ export default function ContactForm() {
 
     startTransition(async () => {
       try {
-        // First, submit the form data to our new backend API
         const response = await fetch('/api/contact', {
           method: 'POST',
           headers: {
@@ -59,7 +58,6 @@ export default function ContactForm() {
           throw new Error(errorData.message || 'Failed to submit message.');
         }
 
-        // If form submission is successful, then call the AI solution generator
         const result = await generateItSolutions({ businessDetails: data.projectDetails });
         setAiSolution(result);
         
@@ -67,7 +65,7 @@ export default function ContactForm() {
           title: "Message Sent & Solutions Generated!",
           description: "We've received your details and will be in touch soon.",
         });
-        reset(); // Reset form after successful submission
+        reset();
       } catch (error) {
         console.error("Error submitting form or generating AI solution:", error);
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
@@ -102,12 +100,12 @@ export default function ContactForm() {
                 <div>
                   <Label htmlFor="name" className="font-semibold">Full Name</Label>
                   <Input id="name" {...register('name')} className={`mt-1 ${errors.name ? 'border-destructive' : ''}`} />
-                  {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
+                  {errors.name && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.name.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="email" className="font-semibold">Email Address</Label>
                   <Input id="email" type="email" {...register('email')} className={`mt-1 ${errors.email ? 'border-destructive' : ''}`} />
-                  {errors.email && <p className="text-sm text-destructive mt-1">{errors.email.message}</p>}
+                  {errors.email && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.email.message}</p>}
                 </div>
                 <div>
                   <Label htmlFor="phone" className="font-semibold">Phone Number (Optional)</Label>
@@ -122,7 +120,7 @@ export default function ContactForm() {
                     className={`mt-1 ${errors.projectDetails ? 'border-destructive' : ''}`}
                     placeholder="Describe your business, current challenges, and goals..."
                   />
-                  {errors.projectDetails && <p className="text-sm text-destructive mt-1">{errors.projectDetails.message}</p>}
+                  {errors.projectDetails && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.projectDetails.message}</p>}
                 </div>
                 <Button type="submit" disabled={isPending} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-3">
                   {isPending ? (
@@ -143,18 +141,42 @@ export default function ContactForm() {
                   <AlertDescription>{formError}</AlertDescription>
                 </Alert>
               )}
-
-              {aiSolution && (
-                <Alert className="mt-6 border-accent text-accent-foreground bg-accent/10">
-                  <Lightbulb className="h-5 w-5 text-accent" />
-                  <AlertTitle className="font-semibold text-accent">AI-Generated IT Solution Ideas</AlertTitle>
-                  <AlertDescription className="whitespace-pre-wrap mt-2 text-sm">
-                    {aiSolution.solutions}
-                  </AlertDescription>
-                </Alert>
-              )}
             </CardContent>
           </Card>
+
+          {aiSolution && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-8"
+            >
+              <Card className="bg-accent/10 border-accent/30 shadow-lg">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-accent/20 rounded-full">
+                      <Wand2 className="h-6 w-6 text-accent" />
+                    </div>
+                    <CardTitle className="text-accent text-2xl">AI-Generated Recommendations</CardTitle>
+                  </div>
+                  <CardDescription className="text-accent-foreground/80 pl-11">
+                    Based on your project details, here are some potential IT solutions to consider:
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose prose-sm dark:prose-invert prose-p:text-foreground/90 prose-ul:list-disc prose-ul:pl-6 prose-li:text-foreground/90 whitespace-pre-wrap p-4 bg-background/50 rounded-md border border-accent/20">
+                    {aiSolution.solutions}
+                  </div>
+                </CardContent>
+                <CardFooter>
+                   <p className="text-xs text-muted-foreground">
+                    This is an automated suggestion. Our experts will reach out to discuss these ideas in more detail.
+                  </p>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          )}
+
         </div>
       </div>
     </section>
