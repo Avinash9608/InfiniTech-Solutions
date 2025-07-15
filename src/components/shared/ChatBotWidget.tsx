@@ -28,17 +28,28 @@ export default function ChatBotWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      // Allow for the scroll area to render before scrolling
-      setTimeout(() => {
-        const scrollViewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+        const scrollViewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
         if(scrollViewport) {
             scrollViewport.scrollTop = scrollViewport.scrollHeight;
         }
+    }
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        scrollToBottom();
       }, 100);
     }
-  }, [isOpen, messages]);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if(messages.length > 1) {
+        scrollToBottom();
+    }
+  }, [messages])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,10 +110,10 @@ export default function ChatBotWidget() {
                     )}
                     <div
                       className={cn(
-                        'p-3 rounded-lg max-w-[80%] text-sm',
+                        'p-3 rounded-lg max-w-[80%] text-sm shadow',
                         message.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary text-secondary-foreground'
+                          ? 'bg-primary text-primary-foreground rounded-br-none'
+                          : 'bg-secondary text-secondary-foreground rounded-bl-none'
                       )}
                     >
                       {message.text}
@@ -114,8 +125,10 @@ export default function ChatBotWidget() {
                         <Avatar className="w-8 h-8">
                             <AvatarFallback><Bot size={20} /></AvatarFallback>
                         </Avatar>
-                        <div className="p-3 rounded-lg bg-secondary text-secondary-foreground">
-                            <Loader2 className="w-5 h-5 animate-spin" />
+                        <div className="p-3 rounded-lg bg-secondary text-secondary-foreground shadow rounded-bl-none flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-muted-foreground animate-pulse delay-0"></span>
+                            <span className="w-2 h-2 rounded-full bg-muted-foreground animate-pulse delay-150"></span>
+                            <span className="w-2 h-2 rounded-full bg-muted-foreground animate-pulse delay-300"></span>
                         </div>
                     </div>
                 )}
@@ -131,7 +144,7 @@ export default function ChatBotWidget() {
                   className="pr-12"
                   disabled={isLoading}
                 />
-                <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" disabled={isLoading}>
+                <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" disabled={isLoading || !input.trim()}>
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
