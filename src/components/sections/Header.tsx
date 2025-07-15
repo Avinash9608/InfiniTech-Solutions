@@ -82,25 +82,26 @@ export default function Header() {
   }, [isHomePage]);
 
   const navLinkClasses = (isActive: boolean) => {
-    const base = 'transition-colors hover:text-primary';
-    const scrolledState = isScrolled ? 'text-foreground' : 'text-primary-foreground';
-    const activeState = isScrolled ? 'text-primary font-semibold' : 'text-primary-foreground font-semibold';
-    
-    // In dark mode on the homepage (unscrolled), force text to be white/light
-    if (!isScrolled && theme === 'dark') {
-      return cn(base, 'text-primary-foreground', isActive && 'font-semibold');
+    const baseClasses = 'transition-colors hover:text-primary';
+    let colorClass;
+
+    if (isScrolled) {
+      colorClass = isActive ? 'text-primary font-semibold' : 'text-foreground';
+    } else {
+      colorClass = 'text-primary-foreground';
+      if(isActive) colorClass += ' font-semibold'
     }
-    
-    return cn(base, isActive ? activeState : scrolledState);
+
+    return cn(baseClasses, colorClass, "relative group py-2");
   };
 
   const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={cn(navLinkClasses(isActive), "relative group py-2")}>
+      <Link href={href} className={cn(navLinkClasses(isActive))}>
         {children}
         <span className={cn(
-            "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
+            "absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
             !isActive && "group-hover:scale-x-100"
         )} />
       </Link>
@@ -120,7 +121,7 @@ export default function Header() {
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <MotionLink
           href="/"
-          className={cn('text-2xl font-bold transition-colors', (isScrolled || theme === 'light') ? 'text-primary' : 'text-primary-foreground')}
+          className={cn('text-2xl font-bold transition-colors', isScrolled ? 'text-primary' : 'text-primary-foreground')}
           variants={itemVariants}
         >
           InfiniTech
@@ -143,10 +144,10 @@ export default function Header() {
           <motion.div variants={itemVariants}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={cn(navLinkClasses(pathname.startsWith('/services')), "px-0 hover:bg-transparent relative group py-2")}>
+                <Button variant="ghost" className={cn(navLinkClasses(pathname.startsWith('/services')), "px-0 hover:bg-transparent")}>
                   Services <ChevronDown className="ml-1 h-4 w-4" />
                    <span className={cn(
-                      "absolute top-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
+                      "absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
                       !pathname.startsWith('/services') && "group-hover:scale-x-100"
                    )} />
                 </Button>
@@ -180,7 +181,7 @@ export default function Header() {
           <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={cn((isScrolled || theme === 'light') ? 'text-foreground' : 'text-primary-foreground')}>
+              <Button variant="ghost" size="icon" className={cn(isScrolled ? 'text-foreground' : 'text-primary-foreground')}>
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
