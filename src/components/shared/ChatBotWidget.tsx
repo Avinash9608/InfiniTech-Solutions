@@ -23,7 +23,7 @@ const RobotIcon = (props: React.SVGProps<SVGSVGElement>) => (
       fill="currentColor"
       {...props}
     >
-      <path d="M15 4H9V2h6v2zm4 16h-2v-2h2v2zm-4 0h-2v-2h2v2zm-4 0H9v-2h2v2zm-4 0H5v-2h2v2zm12-4H5V9h14v7zM8 12h2v2H8v-2zm6 0h-2v2h2v-2z" />
+      <path d="M12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.32l-2,2L3.68,18.86A9.94,9.94,0,0,0,12,22a10,10,0,0,0,0-20ZM8.5,14a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,8.5,14Zm7,0a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,15.5,14Z" />
     </svg>
 );
 
@@ -170,8 +170,17 @@ export default function ChatBotWidget() {
         transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
         className="fixed bottom-5 right-5 z-50"
       >
-        <Button size="icon" className="w-16 h-16 rounded-full shadow-2xl" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X className="w-10 h-10" /> : <RobotIcon className="w-10 h-10" />}
+        <Button 
+          size="icon" 
+          className="w-20 h-20 rounded-full shadow-2xl flex flex-col gap-1 pt-1" 
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X className="w-8 h-8" /> : (
+            <>
+              <RobotIcon className="w-8 h-8" />
+              <span className="text-xs font-bold">Support</span>
+            </>
+          )}
         </Button>
       </motion.div>
     </>
