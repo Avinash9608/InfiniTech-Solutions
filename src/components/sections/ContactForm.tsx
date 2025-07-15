@@ -1,10 +1,8 @@
 
 "use client";
 
-import { useState, useTransition } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,71 +11,53 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, AlertCircle, Wand2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
 import { motion } from 'framer-motion';
+import { submitContactForm, type FormSubmissionState } from '@/app/actions/contact';
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Invalid email address." }),
-  phone: z.string().optional(),
-  projectDetails: z.string().min(10, { message: "Please provide some details about your project." }),
-});
+function SubmitButton() {
+  const { pending } = useFormStatus();
 
-type ContactFormInputs = z.infer<typeof contactFormSchema>;
-
-interface AISolution {
-  solutions: string;
+  return (
+    <Button type="submit" disabled={pending} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-3">
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          Processing...
+        </>
+      ) : (
+        'Send Message & Generate Solutions'
+      )}
+    </Button>
+  );
 }
 
 export default function ContactForm() {
-  const [isPending, startTransition] = useTransition();
-  const [aiSolution, setAiSolution] = useState<AISolution | null>(null);
-  const [formError, setFormError] = useState<string | null>(null);
+  const initialState: FormSubmissionState = {
+    success: false,
+    message: null,
+    solutions: null,
+  };
+  const [state, formAction] = useFormState(submitContactForm, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormInputs>({
-    resolver: zodResolver(contactFormSchema),
-  });
-
-  const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
-    setFormError(null);
-    setAiSolution(null);
-
-    startTransition(async () => {
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to submit message.');
-        }
-
-        const result = await generateItSolutions({ businessDetails: data.projectDetails });
-        setAiSolution(result);
-        
+  useEffect(() => {
+    if (state.message) {
+      if (state.success) {
         toast({
-          title: "Message Sent & Solutions Generated!",
-          description: "We've received your details and will be in touch soon.",
+          title: "Success!",
+          description: state.message,
         });
-        reset();
-      } catch (error) {
-        console.error("Error submitting form or generating AI solution:", error);
-        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
-        setFormError(`Failed to process your request. ${errorMessage}`);
+        formRef.current?.reset();
+      } else {
         toast({
-          title: "Submission Error",
-          description: `Could not process your request: ${errorMessage}`,
+          title: "Error",
+          description: state.message,
           variant: "destructive",
         });
       }
-    });
-  };
+    }
+  }, [state, toast]);
 
   return (
     <section id="contact" className="py-16 md:py-24 bg-background">
@@ -96,55 +76,45 @@ export default function ContactForm() {
               <CardDescription>Tell us about your business needs for personalized IT solutions.</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form ref={formRef} action={formAction} className="space-y-6">
                 <div>
                   <Label htmlFor="name" className="font-semibold">Full Name</Label>
-                  <Input id="name" {...register('name')} className={`mt-1 ${errors.name ? 'border-destructive' : ''}`} />
-                  {errors.name && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.name.message}</p>}
+                  <Input id="name" name="name" required className="mt-1" />
                 </div>
                 <div>
                   <Label htmlFor="email" className="font-semibold">Email Address</Label>
-                  <Input id="email" type="email" {...register('email')} className={`mt-1 ${errors.email ? 'border-destructive' : ''}`} />
-                  {errors.email && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.email.message}</p>}
+                  <Input id="email" type="email" name="email" required className="mt-1" />
                 </div>
                 <div>
                   <Label htmlFor="phone" className="font-semibold">Phone Number (Optional)</Label>
-                  <Input id="phone" type="tel" {...register('phone')} className="mt-1" />
+                  <Input id="phone" type="tel" name="phone" className="mt-1" />
                 </div>
                 <div>
                   <Label htmlFor="projectDetails" className="font-semibold">Project / Business Details</Label>
                   <Textarea 
                     id="projectDetails" 
-                    {...register('projectDetails')} 
+                    name="projectDetails"
+                    required 
+                    minLength={10}
                     rows={5} 
-                    className={`mt-1 ${errors.projectDetails ? 'border-destructive' : ''}`}
+                    className="mt-1"
                     placeholder="Describe your business, current challenges, and goals..."
                   />
-                  {errors.projectDetails && <p className="text-sm text-destructive mt-1 flex items-center gap-1"><AlertCircle size={14} />{errors.projectDetails.message}</p>}
                 </div>
-                <Button type="submit" disabled={isPending} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-3">
-                  {isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    'Send Message & Generate Solutions'
-                  )}
-                </Button>
+                <SubmitButton />
               </form>
 
-              {formError && (
+              {!state.success && state.message && (
                  <Alert variant="destructive" className="mt-6">
                   <AlertCircle className="h-4 w-4" />
                   <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>{formError}</AlertDescription>
+                  <AlertDescription>{state.message}</AlertDescription>
                 </Alert>
               )}
             </CardContent>
           </Card>
 
-          {aiSolution && (
+          {state.success && state.solutions && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -165,7 +135,7 @@ export default function ContactForm() {
                 </CardHeader>
                 <CardContent>
                   <div className="prose prose-sm dark:prose-invert prose-p:text-foreground/90 prose-ul:list-disc prose-ul:pl-6 prose-li:text-foreground/90 whitespace-pre-wrap p-4 bg-background/50 rounded-md border border-accent/20">
-                    {aiSolution.solutions}
+                    {state.solutions}
                   </div>
                 </CardContent>
                 <CardFooter>
