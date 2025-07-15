@@ -28,7 +28,6 @@ const navItems: NavItem[] = [
         { href: '/admin/hero', label: 'Hero Section', icon: Bot },
         { href: '/admin/header', label: 'Header', icon: LayoutTemplate },
         { href: '/admin/footer', label: 'Footer', icon: CornerDownLeft },
-        { href: '/admin/why-choose-us', label: 'Why Choose Us', icon: HeartHandshake },
       ]
     },
     { href: '/admin/inbox', label: 'Inbox', icon: Mail },

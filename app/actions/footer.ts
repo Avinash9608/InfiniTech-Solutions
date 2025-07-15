@@ -26,7 +26,7 @@ export async function updateCompanyInfo(formData: FormData) {
         companyName: formData.get('companyName') as string,
         companyDescription: formData.get('companyDescription') as string,
       };
-      await FooterContent.findOneAndUpdate({}, companyInfo, { upsert: true });
+      await FooterContent.findOneAndUpdate({}, { companyInfo }, { upsert: true });
       await revalidate();
       return { success: true, message: 'Company info updated.' };
     } catch (error: any) {
