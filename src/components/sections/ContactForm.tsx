@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, AlertCircle, Sparkles, Wand2 } from 'lucide-react';
+import { Loader2, AlertCircle, Wand2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { generateItSolutions } from '@/ai/flows/generate-it-solutions';
 import { motion } from 'framer-motion';
