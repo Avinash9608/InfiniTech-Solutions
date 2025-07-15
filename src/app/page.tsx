@@ -2,7 +2,6 @@
 "use client";
 
 import HeroSection from '@/components/sections/HeroSection';
-import AboutSummarySection from '@/components/sections/AboutSummarySection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import CtaBanner from '@/components/sections/CtaBanner';
@@ -24,7 +23,6 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <AboutSummarySection />
       
       <motion.div
         initial="hidden"

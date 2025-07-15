@@ -1,40 +1,11 @@
+
 "use client";
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import '@/styles/NewHero.css';
 import { useEffect, useState } from 'react';
-
-const slides = [
-  {
-    image: "https://images.unsplash.com/photo-1603201667141-5a2d4c673378?w=1920&auto=format&fit=crop&q=80",
-    text: "Pioneering Web Solutions",
-    dataAiHint: "it company"
-  },
-  {
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1920&auto=format&fit=crop&q=80",
-    text: "Creative Digital Marketing",
-    dataAiHint: "creative workspace"
-  },
-  {
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&auto=format&fit=crop&q=80",
-    text: "Robust Software Development",
-    dataAiHint: "team meeting"
-  },
-  {
-    image: "https://images.unsplash.com/photo-1554232456-8727aae0cfa4?w=1920&auto=format&fit=crop&q=80",
-    text: "Intuitive Mobile Applications",
-    dataAiHint: "developer working"
-  }
-];
-
-const taglines = [
-    "Pioneering Your Digital Future",
-    "Building Tomorrow's Technology",
-    "Innovate, Create, Elevate",
-    "Your Vision, Engineered"
-]
+import { IHeroContent } from '@/models/HeroContent';
 
 const marqueeVariants = {
   animate: {
@@ -51,15 +22,49 @@ const marqueeVariants = {
 };
 
 export default function HeroSection() {
+    const [content, setContent] = useState<IHeroContent | null>(null);
     const [currentTagline, setCurrentTagline] = useState(0);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentTagline((prev) => (prev + 1) % taglines.length);
-        }, 3000);
-        return () => clearInterval(timer);
+        async function fetchHeroContent() {
+            try {
+                const res = await fetch('/api/admin/hero');
+                if (!res.ok) throw new Error('Failed to fetch hero content');
+                const data = await res.json();
+                setContent(data);
+            } catch (error) {
+                console.error(error);
+                // Set fallback content on error
+                setContent({
+                    taglines: ["Your Vision, Engineered"],
+                    slides: [{ image: "https://placehold.co/1920x1080.png", text: "Fallback Slide", dataAiHint: "technology" }]
+                });
+            }
+        }
+        fetchHeroContent();
     }, []);
 
+    useEffect(() => {
+        if (content && content.taglines.length > 0) {
+            const timer = setInterval(() => {
+                setCurrentTagline((prev) => (prev + 1) % content.taglines.length);
+            }, 3000);
+            return () => clearInterval(timer);
+        }
+    }, [content]);
+
+  if (!content) {
+    return (
+        <section className="hero-container">
+            <div className="flex items-center justify-center w-full h-full">
+                <div className="text-white text-2xl">Loading...</div>
+            </div>
+        </section>
+    );
+  }
+
+  const { taglines, slides } = content;
+  const slidesForMarquee = [...slides, ...slides];
 
   return (
     <section className="hero-container">
@@ -69,7 +74,7 @@ export default function HeroSection() {
           variants={marqueeVariants}
           animate="animate"
         >
-          {[...slides, ...slides].map((slide, index) => (
+          {slidesForMarquee.map((slide, index) => (
             <div key={index} className="hero-marquee-slide">
               <Image
                 src={slide.image}
