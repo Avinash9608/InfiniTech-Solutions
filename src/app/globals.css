@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,8 +32,6 @@
     --border: 210 40% 90%;
     --input: 210 40% 94%;
     --ring: 221 44% 45%;
-
-    --radius: 0.5rem;
 
     --chart-1: 221 44% 45%;
     --chart-2: 160 60% 45%;
