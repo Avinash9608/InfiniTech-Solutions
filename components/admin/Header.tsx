@@ -19,6 +19,13 @@ interface HeaderProps {
 export default function Header({ navItems, secret }: HeaderProps) {
   const pathname = usePathname();
 
+  const getAccordionDefaultValues = () => {
+    const activeParent = navItems.find(item => 
+      item.children?.some(child => pathname.startsWith(child.href))
+    );
+    return activeParent ? [activeParent.label] : [];
+  };
+
   return (
     <header className="flex h-16 items-center justify-between md:justify-end gap-4 border-b bg-background px-6">
         <Sheet>
@@ -42,14 +49,20 @@ export default function Header({ navItems, secret }: HeaderProps) {
                       <span>Admin Panel</span>
                   </Link>
 
-                  <Accordion type="multiple" className="w-full">
+                  <Accordion type="multiple" defaultValue={getAccordionDefaultValues()} className="w-full">
                      {navItems.map(item => (
                         item.children ? (
                            <AccordionItem key={item.label} value={item.label} className="border-b-0">
-                            <AccordionTrigger className="text-muted-foreground hover:text-foreground hover:no-underline text-lg py-2">
-                              {item.label}
-                            </AccordionTrigger>
-                            <AccordionContent className="pl-4">
+                            <div className="flex items-center justify-between text-muted-foreground hover:text-foreground">
+                               <SheetClose asChild>
+                                <Link href={`${item.href}?secret=${secret}`} className="flex items-center gap-3 py-2 flex-grow">
+                                    <item.icon className="h-5 w-5" />
+                                    {item.label}
+                                </Link>
+                               </SheetClose>
+                               <AccordionTrigger className="w-auto p-2 hover:no-underline" />
+                            </div>
+                            <AccordionContent className="pl-8">
                               {item.children.map(child => (
                                 <SheetClose asChild key={child.label}>
                                    <Link href={`${child.href}?secret=${secret}`} className="block py-2 text-muted-foreground hover:text-foreground">
@@ -61,7 +74,8 @@ export default function Header({ navItems, secret }: HeaderProps) {
                            </AccordionItem>
                         ) : (
                           <SheetClose asChild key={item.label}>
-                            <Link href={`${item.href}?secret=${secret}`} className="py-2 text-muted-foreground hover:text-foreground">
+                            <Link href={`${item.href}?secret=${secret}`} className="flex items-center gap-3 py-2 text-muted-foreground hover:text-foreground">
+                                <item.icon className="h-5 w-5" />
                                 {item.label}
                             </Link>
                            </SheetClose>
