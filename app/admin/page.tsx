@@ -1,61 +1,43 @@
-import dbConnect from '@/lib/db';
-import Contact, { IContact } from '@/models/Contact';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ShieldAlert, Inbox } from 'lucide-react';
-import { AdminDashboard } from '@/components/sections/AdminDashboard';
+import { Briefcase, Users, BarChart } from 'lucide-react';
 
-// This function now returns the raw mongoose documents with ObjectId
-async function getContacts() {
-  await dbConnect();
-  const contacts = await Contact.find({}).sort({ createdAt: -1 }).lean();
-  return contacts;
-}
-
-interface AdminPageProps {
-  searchParams: {
-    secret?: string;
-  };
-}
-
-export default async function AdminPage({ searchParams }: AdminPageProps) {
-  const adminSecret = process.env.ADMIN_SECRET;
-  const providedSecret = searchParams.secret;
-
-  if (!adminSecret || providedSecret !== adminSecret) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] bg-background text-center px-4">
-        <ShieldAlert className="w-24 h-24 text-destructive mb-6" />
-        <h1 className="text-4xl font-bold text-primary mb-2">Access Denied</h1>
-        <p className="text-muted-foreground max-w-md">
-          You do not have permission to view this page. Please provide the correct secret key.
-        </p>
-      </div>
-    );
-  }
-
-  const contactsData = await getContacts();
-  // We serialize the data here before passing it to the client component.
-  // This ensures that only plain JSON objects are passed.
-  const contacts = JSON.parse(JSON.stringify(contactsData)) as (Omit<IContact, 'createdAt'> & { _id: string; createdAt: string; })[];
+export default function AdminDashboardPage() {
+  // In a real app, you'd fetch this data.
+  const stats = [
+    { title: "Total Submissions", value: "125", icon: Briefcase },
+    { title: "Unique Visitors", value: "1,200", icon: Users },
+    { title: "Conversion Rate", value: "5.7%", icon: BarChart },
+  ];
 
   return (
-    <div className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
+    <div>
+      <h1 className="text-3xl font-bold text-primary mb-6">Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stats.map((stat) => (
+           <Card key={stat.title}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <stat.icon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+       <div className="mt-8">
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-4">
-              <Inbox className="w-8 h-8 text-primary" />
-              <div>
-                <CardTitle className="text-3xl font-bold text-primary">Contact Submissions</CardTitle>
-                <CardDescription>Messages received from the contact form.</CardDescription>
-              </div>
-            </div>
+            <CardTitle>Recent Submissions</CardTitle>
+            <CardDescription>A quick look at the latest messages.</CardDescription>
           </CardHeader>
           <CardContent>
-            <AdminDashboard initialContacts={contacts} />
+            {/* You can add a summary table here later */}
+            <p className="text-muted-foreground">Recent submissions will be displayed here.</p>
           </CardContent>
         </Card>
-      </div>
+       </div>
     </div>
   );
 }
