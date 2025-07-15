@@ -2,7 +2,7 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { Home, Mail, Settings, ShieldAlert, Bot, LayoutDashboard, LayoutTemplate, CornerDownLeft } from 'lucide-react';
+import { Home, Mail, Settings, ShieldAlert, Bot, LayoutDashboard, LayoutTemplate, CornerDownLeft, HeartHandshake } from 'lucide-react';
 import Sidebar from '@/components/admin/Sidebar';
 import Header from '@/components/admin/Header';
 import { useState, useEffect } from 'react';
@@ -28,6 +28,7 @@ const navItems: NavItem[] = [
         { href: '/admin/hero', label: 'Hero Section', icon: Bot },
         { href: '/admin/header', label: 'Header', icon: LayoutTemplate },
         { href: '/admin/footer', label: 'Footer', icon: CornerDownLeft },
+        { href: '/admin/why-choose-us', label: 'Why Choose Us', icon: HeartHandshake },
       ]
     },
     { href: '/admin/inbox', label: 'Inbox', icon: Mail },

@@ -1,49 +1,46 @@
+
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, HeartHandshake, BadgeDollarSign, Clock, RefreshCcw, Zap } from 'lucide-react';
-import type { USP } from '@/lib/types';
+import { HeartHandshake } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { IWhyChooseUsContent } from '@/models/WhyChooseUsContent';
+import * as LucideIcons from 'lucide-react';
 
-const uspData: USP[] = [
-  {
-    id: 'team',
-    title: 'Experienced & Certified Team',
-    description: 'Our professionals bring years of expertise and industry certifications to deliver top-quality solutions.',
-    icon: Users,
-  },
-  {
-    id: 'client-centric',
-    title: 'Client-Centric Approach',
-    description: 'We prioritize your needs, ensuring tailored solutions and transparent communication throughout the project.',
-    icon: HeartHandshake,
-  },
-  {
-    id: 'pricing',
-    title: 'Affordable Pricing',
-    description: 'Competitive and transparent pricing models designed to provide maximum value for your investment.',
-    icon: BadgeDollarSign,
-  },
-  {
-    id: 'support',
-    title: '24/7 Support',
-    description: 'Dedicated support team available around the clock to assist you with any queries or issues.',
-    icon: Clock,
-  },
-  {
-    id: 'agile',
-    title: 'Agile Development',
-    description: 'Flexible and iterative development process to adapt to changes and deliver results efficiently.',
-    icon: RefreshCcw,
-  },
-  {
-    id: 'innovation',
-    title: 'Innovative Solutions',
-    description: 'We leverage the latest technologies to provide cutting-edge solutions that drive business growth.',
-    icon: Zap,
-  },
-];
+const renderIcon = (iconName: string, props = {}) => {
+  const IconComponent = (LucideIcons as any)[iconName];
+  return IconComponent ? <IconComponent {...props} /> : <HeartHandshake {...props} />;
+};
+
+const defaultContent: IWhyChooseUsContent = {
+    uspItems: [
+      { title: 'Experienced & Certified Team', description: 'Our professionals bring years of expertise and industry certifications to deliver top-quality solutions.', icon: 'Users' },
+      { title: 'Client-Centric Approach', description: 'We prioritize your needs, ensuring tailored solutions and transparent communication throughout the project.', icon: 'HeartHandshake' },
+      { title: 'Affordable Pricing', description: 'Competitive and transparent pricing models designed to provide maximum value for your investment.', icon: 'BadgeDollarSign' },
+    ]
+} as IWhyChooseUsContent;
+
 
 export default function WhyChooseUsSection() {
+  const [content, setContent] = useState<IWhyChooseUsContent>(defaultContent);
+
+  useEffect(() => {
+    async function fetchContent() {
+      try {
+        const res = await fetch('/api/admin/why-choose-us');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.uspItems) {
+            setContent(data);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch Why Choose Us content", error);
+      }
+    }
+    fetchContent();
+  }, []);
+
   return (
     <section id="why-us" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -54,9 +51,9 @@ export default function WhyChooseUsSection() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {uspData.map((item) => (
+          {content.uspItems.map((item, index) => (
             <motion.div
-              key={item.id}
+              key={(item as any)._id || index}
               whileHover={{ y: -8 }}
               transition={{ type: 'spring', stiffness: 300 }}
               className="h-full"
@@ -64,7 +61,7 @@ export default function WhyChooseUsSection() {
               <Card className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg h-full">
                 <CardHeader className="pb-4">
                   <div className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-accent/20 text-accent mb-4">
-                    <item.icon className="w-8 h-8" />
+                    {renderIcon(item.icon, {className: 'w-8 h-8'})}
                   </div>
                   <CardTitle className="text-xl font-semibold text-primary">{item.title}</CardTitle>
                 </CardHeader>
