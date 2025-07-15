@@ -53,15 +53,12 @@ export default function Header({ navItems, secret }: HeaderProps) {
                      {navItems.map(item => (
                         item.children ? (
                            <AccordionItem key={item.label} value={item.label} className="border-b-0">
-                            <div className="flex items-center justify-between text-muted-foreground hover:text-foreground">
-                               <SheetClose asChild>
-                                <Link href={`${item.href}?secret=${secret}`} className="flex items-center gap-3 py-2 flex-grow">
-                                    <item.icon className="h-5 w-5" />
-                                    {item.label}
-                                </Link>
-                               </SheetClose>
-                               <AccordionTrigger className="w-auto p-2 hover:no-underline" />
-                            </div>
+                                <AccordionTrigger className="p-0 hover:no-underline text-muted-foreground hover:text-foreground">
+                                    <span className="flex items-center gap-3 py-2 flex-grow">
+                                        <item.icon className="h-5 w-5" />
+                                        {item.label}
+                                    </span>
+                                </AccordionTrigger>
                             <AccordionContent className="pl-8">
                               {item.children.map(child => (
                                 <SheetClose asChild key={child.label}>

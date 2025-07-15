@@ -36,16 +36,15 @@ export default function Sidebar({ navItems, secret }: SidebarProps) {
           {navItems.map((item) => (
             item.children ? (
               <AccordionItem key={item.label} value={item.label} className="border-b-0">
-                <div className={cn(
-                  "flex items-center justify-between rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
-                   pathname === item.href && "bg-secondary text-primary font-semibold"
+                <AccordionTrigger className={cn(
+                  "flex items-center justify-between rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary hover:no-underline",
+                   item.children.some(c => pathname === c.href) && "bg-secondary text-primary font-semibold"
                 )}>
-                  <Link href={`${item.href}?secret=${secret}`} className="flex items-center gap-3 flex-grow">
+                  <div className="flex items-center gap-3 flex-grow">
                      <item.icon className="h-5 w-5" />
                      {item.label}
-                  </Link>
-                  <AccordionTrigger className="p-0 w-auto hover:no-underline" />
-                </div>
+                  </div>
+                </AccordionTrigger>
                 <AccordionContent className="pl-6 pb-0">
                   <ul className="space-y-1 mt-1 border-l border-border ml-2">
                     {item.children.map(child => {
