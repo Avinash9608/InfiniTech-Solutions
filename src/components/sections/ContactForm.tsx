@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from 'react';
@@ -44,14 +45,27 @@ export default function ContactForm() {
 
     startTransition(async () => {
       try {
-        // Simulate form submission
-        console.log("Form data submitted:", data);
-        // Call AI solution generator
+        // First, submit the form data to our new backend API
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to submit message.');
+        }
+
+        // If form submission is successful, then call the AI solution generator
         const result = await generateItSolutions({ businessDetails: data.projectDetails });
         setAiSolution(result);
+        
         toast({
           title: "Message Sent & Solutions Generated!",
-          description: "We've received your details and generated some initial IT solutions.",
+          description: "We've received your details and will be in touch soon.",
         });
         reset(); // Reset form after successful submission
       } catch (error) {
