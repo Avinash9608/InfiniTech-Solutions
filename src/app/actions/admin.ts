@@ -33,6 +33,7 @@ const replySchema = z.object({
   id: z.string(),
   replyMessage: z.string().min(10, 'Reply must be at least 10 characters long.'),
   secret: z.string(),
+  attachment: z.instanceof(File).optional(),
 });
 
 // Action to send a reply
@@ -41,13 +42,14 @@ export async function replyToContact(formData: FormData) {
     id: formData.get('id'),
     replyMessage: formData.get('replyMessage'),
     secret: formData.get('secret'),
+    attachment: formData.get('attachment'),
   });
 
   if (!validatedFields.success) {
     return { success: false, message: 'Invalid data.' };
   }
 
-  const { id, replyMessage, secret } = validatedFields.data;
+  const { id, replyMessage, secret, attachment } = validatedFields.data;
   verifyAdmin(secret);
 
   try {
@@ -69,8 +71,7 @@ export async function replyToContact(formData: FormData) {
       },
     });
 
-    // Send the email
-    await transporter.sendMail({
+    const mailOptions: nodemailer.SendMailOptions = {
       from: `"InfiniTech Solutions" <${process.env.EMAIL_USER}>`,
       to: contact.email,
       subject: `Re: Your Inquiry to InfiniTech Solutions`,
@@ -83,7 +84,20 @@ export async function replyToContact(formData: FormData) {
         <p>We will be in touch with more details shortly.</p>
         <p>Best regards,<br/>The InfiniTech Team</p>
       `,
-    });
+      attachments: [],
+    };
+    
+    if (attachment && attachment.size > 0) {
+      const buffer = Buffer.from(await attachment.arrayBuffer());
+      mailOptions.attachments!.push({
+        filename: attachment.name,
+        content: buffer,
+        contentType: attachment.type,
+      });
+    }
+
+    // Send the email
+    await transporter.sendMail(mailOptions);
 
     // Update the contact to mark as replied
     contact.replied = true;

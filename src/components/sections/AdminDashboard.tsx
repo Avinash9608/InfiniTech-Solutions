@@ -32,11 +32,12 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Trash, Mail, CheckCircle, Loader2 } from 'lucide-react';
+import { Trash, Mail, CheckCircle, Loader2, Eye, File } from 'lucide-react';
 import { deleteContact, replyToContact } from '@/app/actions/admin';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 
 type ContactWithId = Omit<IContact, 'createdAt'> & { _id: string; createdAt: string };
 
@@ -48,7 +49,8 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
   const [contacts, setContacts] = useState(initialContacts);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isReplying, setIsReplying] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<ContactWithId | null>(null);
+  const [selectedContactForReply, setSelectedContactForReply] = useState<ContactWithId | null>(null);
+  const [selectedContactForView, setSelectedContactForView] = useState<ContactWithId | null>(null);
   
   const searchParams = useSearchParams();
   const secret = searchParams.get('secret') || '';
@@ -70,10 +72,9 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
     setIsReplying(true);
     const result = await replyToContact(formData);
     if (result.success) {
-      // Optimistically update the UI
-      setContacts(prev => prev.map(c => c._id === selectedContact?._id ? {...c, replied: true} : c));
+      setContacts(prev => prev.map(c => c._id === selectedContactForReply?._id ? {...c, replied: true} : c));
       toast({ title: 'Success', description: result.message });
-      setSelectedContact(null); // Close dialog
+      setSelectedContactForReply(null);
     } else {
       toast({ title: 'Error', description: result.message, variant: 'destructive' });
     }
@@ -90,7 +91,7 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
             <TableHead>Email</TableHead>
             <TableHead>Project Details</TableHead>
             <TableHead className="w-[120px] text-center">Status</TableHead>
-            <TableHead className="w-[120px] text-right">Actions</TableHead>
+            <TableHead className="w-[150px] text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -111,8 +112,11 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
                   <span className="text-muted-foreground">Pending</span>
                 )}
               </TableCell>
-              <TableCell className="text-right space-x-2">
-                <Button variant="ghost" size="icon" onClick={() => setSelectedContact(contact)}>
+              <TableCell className="text-right space-x-1">
+                 <Button variant="ghost" size="icon" onClick={() => setSelectedContactForView(contact)}>
+                  <Eye className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setSelectedContactForReply(contact)}>
                   <Mail className="w-4 h-4" />
                 </Button>
                 <AlertDialog>
@@ -145,22 +149,49 @@ export function AdminDashboard({ initialContacts }: AdminDashboardProps) {
         <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
       )}
 
+      {/* View Message Dialog */}
+       <Dialog open={!!selectedContactForView} onOpenChange={() => setSelectedContactForView(null)}>
+        <DialogContent className="sm:max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Message from {selectedContactForView?.name}</DialogTitle>
+            <DialogDescription>
+             Email: {selectedContactForView?.email}
+            </DialogDescription>
+          </DialogHeader>
+           <div className="mt-4 max-h-[60vh] overflow-y-auto pr-4">
+              <p className="text-sm text-foreground whitespace-pre-wrap">
+                {selectedContactForView?.projectDetails}
+              </p>
+            </div>
+           <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button">Close</Button>
+              </DialogClose>
+            </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+
       {/* Reply Dialog */}
-      <Dialog open={!!selectedContact} onOpenChange={() => setSelectedContact(null)}>
+      <Dialog open={!!selectedContactForReply} onOpenChange={() => setSelectedContactForReply(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reply to {selectedContact?.name}</DialogTitle>
+            <DialogTitle>Reply to {selectedContactForReply?.name}</DialogTitle>
             <DialogDescription>
               Your reply will be sent from {process.env.NEXT_PUBLIC_EMAIL_USER || 'your configured email'}.
             </DialogDescription>
           </DialogHeader>
           <form action={handleReplySubmit}>
-            <input type="hidden" name="id" value={selectedContact?._id} />
+            <input type="hidden" name="id" value={selectedContactForReply?._id} />
             <input type="hidden" name="secret" value={secret} />
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
                 <Label htmlFor="replyMessage">Your Message</Label>
                 <Textarea id="replyMessage" name="replyMessage" rows={8} required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="attachment">Attachment (Optional)</Label>
+                <Input id="attachment" name="attachment" type="file" />
               </div>
             </div>
             <DialogFooter>
