@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
       icon: Home,
       children: [
         { href: '/admin/hero', label: 'Hero Section', icon: Bot },
+        { href: '/admin/why-choose-us', label: 'Why Choose Us', icon: HeartHandshake },
         { href: '/admin/header', label: 'Header', icon: LayoutTemplate },
         { href: '/admin/footer', label: 'Footer', icon: CornerDownLeft },
       ]
