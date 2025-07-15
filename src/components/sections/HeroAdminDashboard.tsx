@@ -34,6 +34,7 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
+    AlertDialogTrigger,
   } from '@/components/ui/alert-dialog';
 import { Trash, Edit, PlusCircle, Tag, Image as ImageIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
