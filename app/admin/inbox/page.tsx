@@ -1,5 +1,5 @@
-import dbConnect from '@/src/lib/db';
-import Contact, { IContact } from '@/src/models/Contact';
+import dbConnect from '@/lib/db';
+import Contact, { IContact } from '@/models/Contact';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Inbox } from 'lucide-react';
 import { AdminDashboard } from '@/components/sections/AdminDashboard';
