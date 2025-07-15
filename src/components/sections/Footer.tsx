@@ -1,3 +1,4 @@
+
 "use client";
 import Link from 'next/link';
 import { Linkedin, Facebook, Instagram, Twitter, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
@@ -21,10 +22,12 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+    
     const toggleVisibility = () => {
       if (window.pageYOffset > 300) {
         setIsVisible(true);
@@ -99,9 +102,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border pt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} InfiniTech Solutions. All rights reserved.
-          </p>
+          {currentYear && (
+            <p className="text-sm text-muted-foreground">
+              &copy; {currentYear} InfiniTech Solutions. All rights reserved.
+            </p>
+          )}
           <div className="mt-2">
             <Link href="/privacy-policy" className="text-xs text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
