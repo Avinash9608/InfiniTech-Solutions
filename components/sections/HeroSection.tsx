@@ -21,28 +21,39 @@ const marqueeVariants = {
   },
 };
 
-export default function HeroSection() {
-    const [content, setContent] = useState<IHeroContent | null>(null);
+interface HeroSectionProps {
+    initialContent?: IHeroContent | null;
+}
+
+export default function HeroSection({ initialContent = null }: HeroSectionProps) {
+    const [content, setContent] = useState<IHeroContent | null>(initialContent);
     const [currentTagline, setCurrentTagline] = useState(0);
 
     useEffect(() => {
-        async function fetchHeroContent() {
-            try {
-                const res = await fetch('/api/admin/hero');
-                if (!res.ok) throw new Error('Failed to fetch hero content');
-                const data = await res.json();
-                setContent(data);
-            } catch (error) {
-                console.error(error);
-                // Set fallback content on error
-                setContent({
-                    taglines: ["Your Vision, Engineered"],
-                    slides: [{ image: "https://placehold.co/1920x1080.png", text: "Fallback Slide", dataAiHint: "technology" }]
-                });
+        if (!initialContent) {
+            async function fetchHeroContent() {
+                try {
+                    const res = await fetch('/api/admin/hero');
+                    if (!res.ok) throw new Error('Failed to fetch hero content');
+                    const data = await res.json();
+                    setContent(data);
+                } catch (error) {
+                    console.error(error);
+                    setContent({
+                        taglines: ["Your Vision, Engineered"],
+                        slides: [{ image: "https://placehold.co/1920x1080.png", text: "Fallback Slide", dataAiHint: "technology" }]
+                    });
+                }
             }
+            fetchHeroContent();
         }
-        fetchHeroContent();
-    }, []);
+    }, [initialContent]);
+    
+    useEffect(() => {
+        if(initialContent) {
+            setContent(initialContent);
+        }
+    }, [initialContent])
 
     useEffect(() => {
         if (content && content.taglines.length > 0) {
@@ -64,7 +75,7 @@ export default function HeroSection() {
   }
 
   const { taglines, slides } = content;
-  const slidesForMarquee = [...slides, ...slides];
+  const slidesForMarquee = slides && slides.length > 0 ? [...slides, ...slides] : [];
 
   return (
     <section className="hero-container">

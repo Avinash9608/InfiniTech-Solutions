@@ -56,7 +56,7 @@ export default async function HeroAdminPage() {
         <CardContent>
             <div className="relative w-full h-[50vh] overflow-hidden rounded-lg border shadow-lg">
                 <div className="absolute inset-0 transform scale-[0.5] origin-top-left" style={{ width: '200%', height: '200%' }}>
-                    <HeroSection />
+                    <HeroSection initialContent={content} />
                 </div>
             </div>
         </CardContent>
