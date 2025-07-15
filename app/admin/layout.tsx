@@ -1,13 +1,13 @@
-import { redirect } from 'next/navigation';
+
+"use client";
+
+import { useSearchParams } from 'next/navigation';
 import { Home, Mail, Settings, ShieldAlert, Bot } from 'lucide-react';
 import Sidebar from '@/components/admin/Sidebar';
 import Header from '@/components/admin/Header';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-  searchParams: {
-    secret?: string;
-  };
 }
 
 const navItems = [
@@ -16,10 +16,11 @@ const navItems = [
     { href: '/admin/hero', label: 'Hero Section', icon: Bot },
 ];
 
-export default function AdminLayout({ children, searchParams }: Omit<AdminLayoutProps, 'searchParams'> & { searchParams: { secret?: string }}) {
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  const searchParams = useSearchParams();
+  const providedSecret = searchParams.get('secret');
   const adminSecret = process.env.ADMIN_SECRET;
-  const providedSecret = searchParams.secret;
-
+  
   if (!adminSecret || providedSecret !== adminSecret) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-center px-4">
@@ -36,7 +37,7 @@ export default function AdminLayout({ children, searchParams }: Omit<AdminLayout
     <div className="min-h-screen w-full flex bg-secondary">
       <Sidebar navItems={navItems} secret={providedSecret} />
       <div className="flex flex-col flex-1">
-        <Header />
+        <Header secret={providedSecret} />
         <main className="flex-1 p-6 md:p-8 overflow-auto">
           {children}
         </main>
