@@ -1,17 +1,18 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { LucideIcon, Bot } from 'lucide-react';
 
 interface SidebarProps {
   navItems: { href: string; label: string; icon: LucideIcon }[];
-  secret: string;
 }
 
-export default function Sidebar({ navItems, secret }: SidebarProps) {
+export default function Sidebar({ navItems }: SidebarProps) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const secret = searchParams.get('secret') || '';
 
   return (
     <aside className="hidden md:flex w-64 flex-col bg-background border-r">
