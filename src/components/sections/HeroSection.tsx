@@ -1,9 +1,8 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import '@/styles/ImageSliderHero.css';
 
 const slides = [
@@ -29,79 +28,58 @@ const slides = [
   }
 ];
 
-const slideVariants = {
-  enter: {
-    x: '100%',
-    opacity: 0,
+const marqueeVariants = {
+  animate: {
+    x: ['0%', '-100%'],
+    transition: {
+      x: {
+        repeat: Infinity,
+        repeatType: 'loop',
+        duration: 40, // Adjust duration for speed
+        ease: 'linear',
+      },
+    },
   },
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: {
-    x: '-100%',
-    opacity: 0,
-  },
-};
-
-const transition = {
-  x: { type: "spring", stiffness: 300, damping: 30 },
-  opacity: { duration: 0.5 }
 };
 
 export default function HeroSection() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="hero-slider">
-      <AnimatePresence initial={false} mode="wait">
+      <div className="hero-marquee-container">
         <motion.div
-          key={index}
-          className="hero-slide"
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={transition}
+          className="hero-marquee-track"
+          variants={marqueeVariants}
+          animate="animate"
         >
-          <Image
-            src={slides[index].image}
-            alt={slides[index].text}
-            fill
-            priority
-            className="object-cover"
-            data-ai-hint={slides[index].dataAiHint}
-          />
+          {[...slides, ...slides].map((slide, index) => (
+            <div key={index} className="hero-marquee-slide">
+              <Image
+                src={slide.image}
+                alt={slide.text}
+                fill
+                priority={index < slides.length}
+                className="object-cover"
+                data-ai-hint={slide.dataAiHint}
+              />
+            </div>
+          ))}
         </motion.div>
-      </AnimatePresence>
+      </div>
       <div className="hero-overlay" />
       <div className="hero-content">
         <div className="text-center">
-          <AnimatePresence mode="wait">
             <motion.h1
-              key={index}
               className="text-5xl md:text-7xl font-extrabold text-primary-foreground mb-6"
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={transition}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {slides[index].text}
+              Pioneering Your Digital Future
             </motion.h1>
-          </AnimatePresence>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto"
           >
             We build digital experiences that drive growth, engagement, and success for your business.
@@ -109,7 +87,7 @@ export default function HeroSection() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
             className="space-x-4"
           >
             <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
