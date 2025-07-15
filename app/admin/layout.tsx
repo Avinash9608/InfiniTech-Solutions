@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Home, Mail, Settings, ShieldAlert, Bot } from 'lucide-react';
 import Sidebar from '@/components/admin/Sidebar';
 import Header from '@/components/admin/Header';
+import { useState, useEffect } from 'react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -17,9 +18,23 @@ const navItems = [
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
+  const [isClient, setIsClient] = useState(false);
   const searchParams = useSearchParams();
   const providedSecret = searchParams.get('secret');
   const adminSecret = process.env.ADMIN_SECRET;
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Render a loading state or null on the server and initial client render
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Bot className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
   
   if (!adminSecret || providedSecret !== adminSecret) {
     return (
