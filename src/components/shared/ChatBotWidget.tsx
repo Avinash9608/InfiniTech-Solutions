@@ -1,0 +1,154 @@
+
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Bot, X, Send, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { chatFlow } from '@/ai/flows/chat-flow';
+
+type Message = {
+  role: 'user' | 'bot';
+  text: string;
+};
+
+export default function ChatBotWidget() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'bot',
+      text: "Hello! I'm the InfiniTech support bot. How can I help you today?",
+    },
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Allow for the scroll area to render before scrolling
+      setTimeout(() => {
+        const scrollViewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
+        if(scrollViewport) {
+            scrollViewport.scrollTop = scrollViewport.scrollHeight;
+        }
+      }, 100);
+    }
+  }, [isOpen, messages]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = { role: 'user', text: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await chatFlow({ query: input });
+      if (response && response.answer) {
+        const botMessage: Message = { role: 'bot', text: response.answer };
+        setMessages((prev) => [...prev, botMessage]);
+      } else {
+         const errorMessage: Message = { role: 'bot', text: "Sorry, I couldn't get a response. Please try again." };
+         setMessages((prev) => [...prev, errorMessage]);
+      }
+    } catch (error) {
+      console.error('Chatbot error:', error);
+      const errorMessage: Message = { role: 'bot', text: "Sorry, something went wrong. Please try again later." };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="fixed bottom-[100px] right-5 w-[350px] h-[500px] bg-card border rounded-lg shadow-xl flex flex-col z-50"
+          >
+            <header className="p-4 border-b flex justify-between items-center bg-primary text-primary-foreground rounded-t-lg">
+              <div className="flex items-center gap-3">
+                <Bot className="w-6 h-6" />
+                <h3 className="font-semibold text-lg">Support Bot</h3>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground">
+                <X className="w-5 h-5" />
+              </Button>
+            </header>
+            
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+              <div className="space-y-4">
+                {messages.map((message, index) => (
+                  <div key={index} className={cn('flex items-end gap-2', message.role === 'user' ? 'justify-end' : 'justify-start')}>
+                    {message.role === 'bot' && (
+                      <Avatar className="w-8 h-8">
+                        <AvatarFallback><Bot size={20} /></AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div
+                      className={cn(
+                        'p-3 rounded-lg max-w-[80%] text-sm',
+                        message.role === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-secondary text-secondary-foreground'
+                      )}
+                    >
+                      {message.text}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                   <div className="flex items-end gap-2 justify-start">
+                        <Avatar className="w-8 h-8">
+                            <AvatarFallback><Bot size={20} /></AvatarFallback>
+                        </Avatar>
+                        <div className="p-3 rounded-lg bg-secondary text-secondary-foreground">
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                        </div>
+                    </div>
+                )}
+              </div>
+            </ScrollArea>
+
+            <form onSubmit={handleSubmit} className="p-4 border-t">
+              <div className="relative">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask a question..."
+                  className="pr-12"
+                  disabled={isLoading}
+                />
+                <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" disabled={isLoading}>
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
+        className="fixed bottom-5 right-5 z-50"
+      >
+        <Button size="icon" className="w-16 h-16 rounded-full shadow-2xl" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X className="w-8 h-8" /> : <Bot className="w-8 h-8" />}
+        </Button>
+      </motion.div>
+    </>
+  );
+}

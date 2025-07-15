@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import ChatBotWidget from '@/components/shared/ChatBotWidget';
 
 export const metadata: Metadata = {
   title: 'InfiniTech Solutions - Innovative IT Services',
@@ -34,6 +35,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <ChatBotWidget />
           <Toaster />
         </ThemeProvider>
       </body>
