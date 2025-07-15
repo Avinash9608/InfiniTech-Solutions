@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Users, Eye, AlertCircle, Clock, BarChart } from 'lucide-react';
 import { AnalyticsCharts } from '@/components/admin/AnalyticsCharts';
