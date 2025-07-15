@@ -23,7 +23,7 @@ const RobotIcon = (props: React.SVGProps<SVGSVGElement>) => (
       fill="currentColor"
       {...props}
     >
-        <path d="M12,2A10,10,0,0,0,2,12c0,4.42,2.87,8.17,6.84,9.5c.5.08.66-0.21.66-0.47c0-0.23-0.01-0.84-0.01-1.64c-2.78,0.6-3.37-1.34-3.37-1.34c-0.45-1.16-1.11-1.47-1.11-1.47c-0.91-0.62,0.07-0.6,0.07-0.6c1,0.07,1.53,1.03,1.53,1.03c0.89,1.53,2.34,1.09,2.91,0.83c0.09-0.65,0.35-1.09,0.63-1.34C7.11,15.72,4.42,14.7,4.42,10.52c0-1.1,0.39-2,1.03-2.71c-0.1-0.25-0.45-1.28,0.1-2.67c0,0,0.84-0.27,2.75,1.02C9.2,6,9.6,5.95,10,5.95c0.4,0,0.8,0.05,1.18,0.15c1.91-1.29,2.75-1.02,2.75-1.02c0.55,1.39,0.2,2.42,0.1,2.67c0.64,0.71,1.03,1.61,1.03,2.71c0,4.19-2.69,5.2-5.27,5.5c0.36,0.31,0.68,0.92,0.68,1.86c0,1.34-0.01,2.42-0.01,2.75c0,0.27,0.16,0.56,0.67,0.47A10,10,0,0,0,12,2Z" />
+      <path d="M15 4H9V2h6v2zm4 16h-2v-2h2v2zm-4 0h-2v-2h2v2zm-4 0H9v-2h2v2zm-4 0H5v-2h2v2zm12-4H5V9h14v7zM8 12h2v2H8v-2zm6 0h-2v2h2v-2z" />
     </svg>
 );
 
@@ -171,7 +171,7 @@ export default function ChatBotWidget() {
         className="fixed bottom-5 right-5 z-50"
       >
         <Button size="icon" className="w-16 h-16 rounded-full shadow-2xl" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X className="w-8 h-8" /> : <RobotIcon className="w-8 h-8" />}
+          {isOpen ? <X className="w-10 h-10" /> : <RobotIcon className="w-10 h-10" />}
         </Button>
       </motion.div>
     </>
