@@ -4,10 +4,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LucideIcon, Bot } from 'lucide-react';
+import { Bot, ChevronDown } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import type { NavItem } from '@/app/admin/layout';
 
 interface SidebarProps {
-  navItems: { href: string; label: string; icon: LucideIcon }[];
+  navItems: NavItem[];
   secret: string | null;
 }
 
@@ -23,25 +25,57 @@ export default function Sidebar({ navItems, secret }: SidebarProps) {
         </Link>
       </div>
       <nav className="flex-1 px-4 py-2">
-        <ul className="space-y-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <li key={item.label}>
+        <Accordion type="multiple" defaultValue={navItems.filter(item => item.children?.some(child => pathname.startsWith(child.href))).map(item => item.label)} className="w-full">
+          {navItems.map((item) => (
+            item.children ? (
+              <AccordionItem key={item.label} value={item.label} className="border-b-0">
+                <AccordionTrigger className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary hover:no-underline",
+                  pathname === item.href && "bg-secondary text-primary font-semibold"
+                )}>
+                   <div className="flex items-center gap-3">
+                     <item.icon className="h-5 w-5" />
+                     {item.label}
+                   </div>
+                </AccordionTrigger>
+                <AccordionContent className="pl-6 pb-0">
+                  <ul className="space-y-1 mt-1 border-l border-border ml-2">
+                    {item.children.map(child => {
+                      const isActive = pathname === child.href;
+                      return (
+                         <li key={child.label}>
+                           <Link
+                             href={`${child.href}?secret=${secret}`}
+                             className={cn(
+                               "flex items-center gap-3 rounded-lg px-3 py-2 ml-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
+                               isActive && "bg-secondary text-primary font-semibold"
+                             )}
+                           >
+                             <child.icon className="h-4 w-4" />
+                             {child.label}
+                           </Link>
+                         </li>
+                      )
+                    })}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            ) : (
+              <div key={item.label}>
                 <Link
                   href={`${item.href}?secret=${secret}`}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
-                    isActive && "bg-secondary text-primary font-semibold"
+                    pathname === item.href && "bg-secondary text-primary font-semibold"
                   )}
                 >
                   <item.icon className="h-5 w-5" />
                   {item.label}
                 </Link>
-              </li>
-            );
-          })}
-        </ul>
+              </div>
+            )
+          ))}
+        </Accordion>
       </nav>
       <div className="p-4 mt-auto">
         {/* Can add footer items here, like a sign out button */}

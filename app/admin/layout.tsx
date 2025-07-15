@@ -7,15 +7,29 @@ import Sidebar from '@/components/admin/Sidebar';
 import Header from '@/components/admin/Header';
 import { useState, useEffect } from 'react';
 
+export interface NavItem {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+  children?: NavItem[];
+}
+
+const navItems: NavItem[] = [
+    { 
+      href: '/admin', 
+      label: 'Home', 
+      icon: Home,
+      children: [
+        { href: '/admin/hero', label: 'Hero Section', icon: Bot }
+      ]
+    },
+    { href: '/admin/inbox', label: 'Inbox', icon: Mail },
+];
+
+
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
-
-const navItems = [
-    { href: '/admin', label: 'Dashboard', icon: Home },
-    { href: '/admin/inbox', label: 'Inbox', icon: Mail },
-    { href: '/admin/hero', label: 'Hero Section', icon: Bot },
-];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isClient, setIsClient] = useState(false);
@@ -52,7 +66,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen w-full flex bg-secondary">
       <Sidebar navItems={navItems} secret={providedSecret} />
       <div className="flex flex-col flex-1">
-        <Header secret={providedSecret} />
+        <Header navItems={navItems} secret={providedSecret} />
         <main className="flex-1 p-6 md:p-8 overflow-auto">
           {children}
         </main>

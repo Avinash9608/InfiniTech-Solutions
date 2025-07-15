@@ -1,23 +1,23 @@
 
 'use client';
 
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, Bot } from 'lucide-react';
+import { Menu, Bot, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import type { NavItem } from '@/app/admin/layout';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+
 
 interface HeaderProps {
+    navItems: NavItem[];
     secret: string | null;
 }
 
-export default function Header({ secret }: HeaderProps) {
-  // This is a placeholder for the navItems, as they are defined in the layout
-  // In a real app, you might use a context or a shared config for this
-  const navItems = [
-    { href: '/admin', label: 'Dashboard' },
-    { href: '/admin/inbox', label: 'Inbox' },
-    { href: '/admin/hero', label: 'Hero Section' },
-  ];
+export default function Header({ navItems, secret }: HeaderProps) {
+  const pathname = usePathname();
 
   return (
     <header className="flex h-16 items-center justify-between md:justify-end gap-4 border-b bg-background px-6">
@@ -34,18 +34,40 @@ export default function Header({ secret }: HeaderProps) {
             </SheetTrigger>
             <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
-                <Link
-                    href={`/admin?secret=${secret}`}
-                    className="flex items-center gap-2 text-lg font-semibold mb-4"
-                >
-                    <Bot className="h-6 w-6" />
-                    <span>Admin Panel</span>
-                </Link>
-                {navItems.map(item => (
-                    <Link key={item.label} href={`${item.href}?secret=${secret}`} className="text-muted-foreground hover:text-foreground">
-                        {item.label}
-                    </Link>
-                ))}
+                  <Link
+                      href={`/admin?secret=${secret}`}
+                      className="flex items-center gap-2 text-lg font-semibold mb-4"
+                  >
+                      <Bot className="h-6 w-6" />
+                      <span>Admin Panel</span>
+                  </Link>
+
+                  <Accordion type="multiple" className="w-full">
+                     {navItems.map(item => (
+                        item.children ? (
+                           <AccordionItem key={item.label} value={item.label} className="border-b-0">
+                            <AccordionTrigger className="text-muted-foreground hover:text-foreground hover:no-underline text-lg py-2">
+                              {item.label}
+                            </AccordionTrigger>
+                            <AccordionContent className="pl-4">
+                              {item.children.map(child => (
+                                <SheetClose asChild key={child.label}>
+                                   <Link href={`${child.href}?secret=${secret}`} className="block py-2 text-muted-foreground hover:text-foreground">
+                                    {child.label}
+                                  </Link>
+                                </SheetClose>
+                              ))}
+                            </AccordionContent>
+                           </AccordionItem>
+                        ) : (
+                          <SheetClose asChild key={item.label}>
+                            <Link href={`${item.href}?secret=${secret}`} className="py-2 text-muted-foreground hover:text-foreground">
+                                {item.label}
+                            </Link>
+                           </SheetClose>
+                        )
+                     ))}
+                  </Accordion>
                 </nav>
             </SheetContent>
         </Sheet>
