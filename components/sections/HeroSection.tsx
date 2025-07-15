@@ -1,55 +1,136 @@
+
 "use client";
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import '@/styles/NewHero.css';
+import { useEffect, useState } from 'react';
+import { IHeroContent } from '@/models/HeroContent';
+
+const marqueeVariants = {
+  animate: {
+    x: ['0%', '-100%'],
+    transition: {
+      x: {
+        repeat: Infinity,
+        repeatType: 'loop',
+        duration: 40,
+        ease: 'linear',
+      },
+    },
+  },
+};
 
 export default function HeroSection() {
+    const [content, setContent] = useState<IHeroContent | null>(null);
+    const [currentTagline, setCurrentTagline] = useState(0);
+
+    useEffect(() => {
+        async function fetchHeroContent() {
+            try {
+                const res = await fetch('/api/admin/hero');
+                if (!res.ok) throw new Error('Failed to fetch hero content');
+                const data = await res.json();
+                setContent(data);
+            } catch (error) {
+                console.error(error);
+                // Set fallback content on error
+                setContent({
+                    taglines: ["Your Vision, Engineered"],
+                    slides: [{ image: "https://placehold.co/1920x1080.png", text: "Fallback Slide", dataAiHint: "technology" }]
+                });
+            }
+        }
+        fetchHeroContent();
+    }, []);
+
+    useEffect(() => {
+        if (content && content.taglines.length > 0) {
+            const timer = setInterval(() => {
+                setCurrentTagline((prev) => (prev + 1) % content.taglines.length);
+            }, 3000);
+            return () => clearInterval(timer);
+        }
+    }, [content]);
+
+  if (!content) {
+    return (
+        <section className="hero-container">
+            <div className="flex items-center justify-center w-full h-full">
+                <div className="text-white text-2xl">Loading...</div>
+            </div>
+        </section>
+    );
+  }
+
+  const { taglines, slides } = content;
+  const slidesForMarquee = [...slides, ...slides];
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden -mt-20">
-      <div className="absolute inset-0">
-        <Image 
-          src="https://media.istockphoto.com/id/1363104929/photo/multi-ethnic-office-conference-room-indian-ceo-does-presentation-for-diverse-young.jpg?s=612x612&w=0&k=20&c=xMl3le4J8C91NphAHfvCCl8A68qjd1rHSIChVLni6VE=" 
-          alt="Office conference room meeting" 
-          fill
-          className="object-cover" 
-          quality={80}
-          priority
-        />
-        <div className="absolute inset-0 bg-[rgba(0,0,0,0.8)]" />
+    <section className="hero-container">
+      <div className="hero-background-marquee">
+        <motion.div
+          className="hero-marquee-track"
+          variants={marqueeVariants}
+          animate="animate"
+        >
+          {slidesForMarquee.map((slide, index) => (
+            <div key={index} className="hero-marquee-slide">
+              <Image
+                src={slide.image}
+                alt={slide.text}
+                fill
+                priority={index < slides.length}
+                className="object-cover"
+                data-ai-hint={slide.dataAiHint}
+              />
+            </div>
+          ))}
+        </motion.div>
       </div>
-      <div className="relative z-10 p-8 max-w-3xl mx-auto">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-5xl md:text-6xl font-bold text-primary-foreground mb-6"
-        >
-          Innovative IT Solutions for Your Business Growth
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-xl md:text-2xl text-primary-foreground/90 mb-10"
-        >
-          We provide cutting-edge web design, digital marketing, and software development services to help your business thrive.
-        </motion.p>
+      
+      <div className="hero-content-split">
+         <div className="hero-text-content">
+            <AnimatePresence mode="wait">
+                <motion.h1
+                    key={currentTagline}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="text-5xl md:text-6xl font-extrabold text-primary-foreground mb-6"
+                >
+                    {taglines[currentTagline]}
+                </motion.h1>
+            </AnimatePresence>
+            <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                className="text-lg md:text-xl text-primary-foreground/80 max-w-lg"
+            >
+                We build digital experiences that drive growth, engagement, and success for your business.
+            </motion.p>
+        </div>
+
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="space-x-4"
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+          className="hero-buttons-container"
         >
-          <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
-            <Link href="/contact">Get a Free Consultation</Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild className="text-accent border-accent hover:bg-accent hover:text-accent-foreground shadow-lg transform hover:scale-105 transition-transform duration-300">
-            <Link href="/services">Explore Our Services</Link>
-          </Button>
+          <Link href="/contact" className="ui-btn">
+            <span>
+              Get Started
+            </span>
+          </Link>
+          <Link href="/services" className="ui-btn">
+             <span>
+              Our Services
+            </span>
+          </Link>
         </motion.div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

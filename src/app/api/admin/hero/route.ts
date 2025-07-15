@@ -111,7 +111,7 @@ export async function DELETE(request: Request) {
       } else if (type === 'slide') {
          const slide = heroContent.slides.id(id);
          if(slide) {
-            slide.deleteOne();
+            await slide.deleteOne();
          }
       } else {
         return NextResponse.json({ error: "Invalid type specified" }, { status: 400 });

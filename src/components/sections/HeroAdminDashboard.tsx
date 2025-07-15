@@ -3,7 +3,6 @@
 
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useFormState } from 'react-dom';
 import { IHeroContent, ISlide } from '@/models/HeroContent';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,7 +21,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
   DialogClose,
   DialogTrigger,
@@ -36,10 +34,9 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
   } from '@/components/ui/alert-dialog';
-import { Trash, Edit, PlusCircle, Tag, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Trash, Edit, PlusCircle, Tag, Image as ImageIcon } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 import Image from 'next/image';
 import { addTagline, editTagline, deleteTagline, addSlide, editSlide, deleteSlide } from '@/app/actions/hero';
 
@@ -178,7 +175,6 @@ export function HeroAdminDashboard({ initialContent }: HeroAdminDashboardProps) 
 function AddTaglineDialog({ secret }: { secret: string | null }) {
     const [open, setOpen] = useState(false);
     const { toast } = useToast();
-    const formRef =  useState<HTMLFormElement>(null);
   
     async function formAction(formData: FormData) {
       const result = await addTagline(formData);
