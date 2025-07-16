@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -35,9 +36,9 @@ import {
 import { Trash, Mail, CheckCircle, Loader2, Eye, File } from 'lucide-react';
 import { deleteContact, replyToContact } from '@/app/actions/admin';
 import { useToast } from '@/hooks/use-toast';
-import { Textarea } from '../ui/textarea';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 type ContactWithId = Omit<IContact, 'createdAt'> & { _id: string; createdAt: string };
 
