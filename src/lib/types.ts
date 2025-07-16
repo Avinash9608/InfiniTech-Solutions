@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react';
 export interface SubService {
   title: string;
   description: string;
@@ -38,4 +39,54 @@ export interface USP {
   title: string;
   description: string;
   icon: React.ElementType;
+}
+
+export interface NavItem {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  children?: NavItem[];
+}
+
+export interface INavLink {
+  label: string;
+  href: string;
+}
+
+export interface IHeaderContent {
+  logoText: string;
+  navLinks: INavLink[];
+  serviceLinks: INavLink[];
+  ctaButton: {
+    label: string;
+    href: string;
+  };
+}
+
+export interface IQuickLink {
+  label: string;
+  href: string;
+}
+
+export interface ISocialLink {
+  label: string;
+  href: string;
+}
+
+export interface IFooterContent {
+  companyName: string;
+  companyDescription: string;
+  quickLinks: IQuickLink[];
+  contactInfo: {
+    email: string;
+    phone: string;
+    address: string;
+  };
+  socialLinks: ISocialLink[];
+}
+
+export interface Slide {
+  image: string;
+  text: string;
+  dataAiHint: string;
 }

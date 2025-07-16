@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import '@/styles/NewHero.css';
 import { useEffect, useState } from 'react';
-import { IHeroContent } from '@/models/HeroContent';
+import type { Slide } from '@/lib/types';
 
 const marqueeVariants = {
   animate: {
@@ -22,7 +22,7 @@ const marqueeVariants = {
 };
 
 export default function HeroSection() {
-    const [content, setContent] = useState<IHeroContent | null>(null);
+    const [content, setContent] = useState<{ taglines: string[]; slides: Slide[] } | null>(null);
     const [currentTagline, setCurrentTagline] = useState(0);
 
     useEffect(() => {

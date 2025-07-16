@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
-import HeaderContent from '@/models/HeaderContent';
+import HeaderContent from 'models/HeaderContent';
 
 const initialHeaderData = {
     logoText: 'InfiniTech',

@@ -3,8 +3,6 @@ import { Suspense } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { HeartHandshake } from 'lucide-react';
 import dbConnect from '@/lib/db';
-import WhyChooseUsContent, { IWhyChooseUsContent } from '@/models/WhyChooseUsContent';
-import WhyChooseUsAdminDashboard from '@/components/admin/WhyChooseUsAdminDashboard';
 
 const initialUspData = {
     uspItems: [
@@ -17,41 +15,6 @@ const initialUspData = {
     ]
 };
 
-async function getWhyChooseUsContent() {
-  await dbConnect();
-  let content = await WhyChooseUsContent.findOne().lean();
-
-  if (!content) {
-    content = await WhyChooseUsContent.create(initialUspData);
-    content = content.toObject();
-  }
-  
-  return JSON.parse(JSON.stringify(content)) as IWhyChooseUsContent & { 
-    _id: string; 
-    uspItems: { _id: string, title: string, description: string, icon: string }[]
-  };
-}
-
-export default async function WhyChooseUsAdminPage() {
-  const content = await getWhyChooseUsContent();
-
-  return (
-    <div className="space-y-8">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <HeartHandshake className="w-8 h-8 text-primary" />
-            <div>
-              <CardTitle className="text-3xl font-bold text-primary">Manage 'Why Choose Us'</CardTitle>
-              <CardDescription>Edit the unique selling propositions displayed on the homepage.</CardDescription>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
-      
-      <Suspense fallback={<div>Loading dashboard...</div>}>
-         <WhyChooseUsAdminDashboard initialContent={content} />
-      </Suspense>
-    </div>
-  );
+export default function AdminWhyChooseUsPage() {
+  return <div>Why Choose Us admin page removed.</div>;
 }

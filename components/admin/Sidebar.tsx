@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Bot, ChevronDown } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import type { NavItem } from '@/app/admin/layout';
+import type { NavItem } from '@/lib/types';
 
 interface SidebarProps {
   navItems: NavItem[];
@@ -18,7 +18,7 @@ export default function Sidebar({ navItems, secret }: SidebarProps) {
 
   const getAccordionDefaultValues = () => {
     const activeParent = navItems.find(item => 
-      item.children?.some(child => pathname.startsWith(child.href))
+      item.children?.some((c: NavItem) => pathname.startsWith(c.href))
     );
     return activeParent ? [activeParent.label] : [];
   };
@@ -33,53 +33,52 @@ export default function Sidebar({ navItems, secret }: SidebarProps) {
       </div>
       <nav className="flex-1 px-4 py-2">
         <Accordion type="multiple" defaultValue={getAccordionDefaultValues()} className="w-full">
-          {navItems.map((item) => (
+          {navItems.filter(item => !!item.href || (item.children && item.children.length > 0)).map(item => (
             item.children ? (
               <AccordionItem key={item.label} value={item.label} className="border-b-0">
                 <AccordionTrigger className={cn(
                   "flex items-center justify-between rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary hover:no-underline",
-                   item.children.some(c => pathname === c.href) && "bg-secondary text-primary font-semibold"
+                  item.children.some((c) => pathname === c.href) && "bg-secondary text-primary font-semibold"
                 )}>
                   <div className="flex items-center gap-3 flex-grow">
-                     <item.icon className="h-5 w-5" />
-                     {item.label}
+                    <item.icon className="h-5 w-5" />
+                    {item.label}
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pl-6 pb-0">
                   <ul className="space-y-1 mt-1 border-l border-border ml-2">
-                    {item.children.map(child => {
-                      const isActive = pathname === child.href;
-                      return (
-                         <li key={child.label}>
-                           <Link
-                             href={`${child.href}?secret=${secret}`}
-                             className={cn(
-                               "flex items-center gap-3 rounded-lg px-3 py-2 ml-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
-                               isActive && "bg-secondary text-primary font-semibold"
-                             )}
-                           >
-                             <child.icon className="h-4 w-4" />
-                             {child.label}
-                           </Link>
-                         </li>
-                      )
-                    })}
+                    {item.children.filter(child => !!child.href).map(child => (
+                      <li key={child.label}>
+                        <Link
+                          href={`${child.href}?secret=${secret}`}
+                          className={cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-2 ml-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
+                            pathname === child.href && "bg-secondary text-primary font-semibold"
+                          )}
+                        >
+                          <child.icon className="h-4 w-4" />
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </AccordionContent>
               </AccordionItem>
             ) : (
-              <div key={item.label}>
-                <Link
-                  href={`${item.href}?secret=${secret}`}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
-                    pathname === item.href && "bg-secondary text-primary font-semibold"
-                  )}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
-              </div>
+              !!item.href && (
+                <div key={item.label}>
+                  <Link
+                    href={`${item.href}?secret=${secret}`}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-secondary",
+                      pathname === item.href && "bg-secondary text-primary font-semibold"
+                    )}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.label}
+                  </Link>
+                </div>
+              )
             )
           ))}
         </Accordion>

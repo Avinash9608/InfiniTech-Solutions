@@ -2,6 +2,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
-import { IHeaderContent } from '@/models/HeaderContent';
+import type { IHeaderContent } from '@/lib/types';
 
 const defaultHeaderContent: IHeaderContent = {
   logoText: 'InfiniTech',
@@ -85,18 +86,37 @@ export default function Header() {
     );
   };
   
+  // Filter out Contact/Contact Us from navLinks
+  const filteredNavLinks = content.navLinks.filter(
+    (item) => item.label !== 'Contact' && item.label !== 'Contact Us'
+  );
+
+  // Hardcoded main nav links for public site
+  const mainNavLinks = [
+    { href: '/', label: 'Home' },
+    // Services is handled as a dropdown, not a direct link
+    { href: '/portfolio', label: 'Portfolio' },
+    { href: '/about', label: 'About Us' },
+  ];
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-card/80 backdrop-blur-sm shadow-lg' : 'bg-transparent'}`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
-        <Link href="/" className={`text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}>
+        <Link href="/" className={`flex items-center gap-2 text-2xl font-bold transition-colors ${isScrolled ? 'text-primary' : 'text-primary-foreground'}`}> 
+          <Image src="/logo.png" alt="Logo" width={40} height={40} priority />
           {content.logoText}
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
-          {content.navLinks.map(link => <NavLink key={link.href} href={link.href}>{link.label}</NavLink>)}
-          
+          {/* Home first */}
+          {mainNavLinks
+            .filter((item) => item.label === 'Home')
+            .map((item) => (
+              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            ))}
+          {/* Services dropdown second */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
@@ -104,19 +124,38 @@ export default function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {content.serviceLinks.map((item) => (
-                <DropdownMenuItem key={item.label} asChild>
-                  <Link href={item.href}>{item.label}</Link>
-                </DropdownMenuItem>
-              ))}
+              {content.serviceLinks
+                .filter(
+                  (item): item is { href: string; label: string } =>
+                    !!item && typeof item.href === 'string' && item.href.length > 0 && typeof item.label === 'string'
+                )
+                .map((item) => (
+                  <DropdownMenuItem key={item.label} asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          {/* Portfolio third */}
+          {mainNavLinks
+            .filter((item) => item.label === 'Portfolio')
+            .map((item) => (
+              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            ))}
+          {/* About Us fourth */}
+          {mainNavLinks
+            .filter((item) => item.label === 'About Us')
+            .map((item) => (
+              <NavLink key={item.href} href={item.href}>{item.label}</NavLink>
+            ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button asChild>
-            <Link href={content.ctaButton.href}>{content.ctaButton.label}</Link>
-          </Button>
+          {content.ctaButton?.href && (
+            <Button asChild>
+              <Link href={content.ctaButton.href}>{content.ctaButton.label}</Link>
+            </Button>
+          )}
           <ThemeToggle />
         </div>
 
@@ -140,23 +179,52 @@ export default function Header() {
                 </SheetClose>
               </div>
               <nav className="flex flex-col space-y-4 flex-grow">
-                {[...content.navLinks, { href: content.ctaButton.href, label: content.ctaButton.label }].map((item) => (
-                  <SheetClose asChild key={item.label}>
-                    <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
-                      {item.label}
-                    </Link>
-                  </SheetClose>
-                ))}
-                 <p className="text-lg text-foreground py-2">Services</p>
-                 <div className="flex flex-col space-y-3 pl-4">
-                  {content.serviceLinks.map((item) => (
+                {/* Home first */}
+                {mainNavLinks
+                  .filter((item) => item.label === 'Home')
+                  .map((item) => (
                     <SheetClose asChild key={item.label}>
-                      <Link href={item.href} className="text-md text-muted-foreground hover:text-primary transition-colors">
+                      <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
                         {item.label}
                       </Link>
                     </SheetClose>
                   ))}
-                 </div>
+                {/* Services dropdown second */}
+                <p className="text-lg text-foreground py-2">Services</p>
+                <div className="flex flex-col space-y-3 pl-4">
+                  {content.serviceLinks
+                    .filter(
+                      (item): item is { href: string; label: string } =>
+                        !!item && typeof item.href === 'string' && item.href.length > 0 && typeof item.label === 'string'
+                    )
+                    .map((item) => (
+                      <SheetClose asChild key={item.label}>
+                        <Link href={item.href} className="text-md text-muted-foreground hover:text-primary transition-colors">
+                          {item.label}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                </div>
+                {/* Portfolio third */}
+                {mainNavLinks
+                  .filter((item) => item.label === 'Portfolio')
+                  .map((item) => (
+                    <SheetClose asChild key={item.label}>
+                      <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  ))}
+                {/* About Us fourth */}
+                {mainNavLinks
+                  .filter((item) => item.label === 'About Us')
+                  .map((item) => (
+                    <SheetClose asChild key={item.label}>
+                      <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  ))}
               </nav>
             </SheetContent>
           </Sheet>

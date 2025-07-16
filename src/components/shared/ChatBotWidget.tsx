@@ -171,14 +171,19 @@ export default function ChatBotWidget() {
         className="fixed bottom-5 right-5 z-50"
       >
         <Button 
-          size="icon" 
-          className="w-20 h-20 rounded-full shadow-2xl flex flex-col gap-1 pt-1" 
+          size="icon"
+          className="w-20 h-20 rounded-full shadow-2xl flex flex-col items-center justify-center gap-1 p-0"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X className="w-8 h-8" /> : (
+          {isOpen ? (
+            <>
+              <X className="w-8 h-8" />
+              <span className="text-xs font-bold mt-1">Support</span>
+            </>
+          ) : (
             <>
               <RobotIcon className="w-8 h-8" />
-              <span className="text-xs font-bold">Support</span>
+              <span className="text-xs font-bold mt-1">Support</span>
             </>
           )}
         </Button>

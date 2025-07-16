@@ -125,6 +125,7 @@ export default function Header() {
           variants={itemVariants}
         >
           InfiniTech
+          
         </MotionLink>
 
         <motion.nav
@@ -137,43 +138,30 @@ export default function Header() {
             },
           }}
         >
-          <motion.div variants={itemVariants}>
-            <NavLink href="/">Home</NavLink>
-          </motion.div>
+          {navItems.filter(link => !!link.href).map(link => <NavLink key={link.href} href={link.href}>{link.label}</NavLink>)}
           
-          <motion.div variants={itemVariants}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className={cn(navLinkClasses(pathname.startsWith('/services')), "px-0 hover:bg-transparent")}>
-                  Services <ChevronDown className="ml-1 h-4 w-4" />
-                   <span className={cn(
-                      "absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-left transform transition-transform duration-300 ease-out scale-x-0",
-                      !pathname.startsWith('/services') && "group-hover:scale-x-100"
-                   )} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {serviceItems.map((item) => (
-                  <DropdownMenuItem key={item.label} asChild>
-                    <Link href={item.href}>{item.label}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <NavLink href="/portfolio">Portfolio</NavLink>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <NavLink href="/about">About Us</NavLink>
-          </motion.div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className={`${navLinkClasses(pathname.startsWith('/services'))} px-0 hover:bg-transparent`}>
+                Services <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {serviceItems.filter(item => !!item.href).map((item) => (
+                <DropdownMenuItem key={item.label} asChild>
+                  <Link href={item.href}>{item.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </motion.nav>
 
         <motion.div className="hidden md:flex items-center gap-4" variants={itemVariants}>
-          <Button asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
+          {navItems.find(item => item.href === '/contact')?.href && (
+            <Button asChild>
+              <Link href="/contact">Contact Us</Link>
+            </Button>
+          )}
           <ThemeToggle />
         </motion.div>
 
@@ -197,16 +185,18 @@ export default function Header() {
                 </SheetClose>
               </div>
               <nav className="flex flex-col space-y-4 flex-grow">
-                {navItems.map((item) => (
-                  <SheetClose asChild key={item.label}>
-                    <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
-                      {item.label}
-                    </Link>
-                  </SheetClose>
-                ))}
+                {[...navItems.filter(link => !!link.href), { href: '/contact', label: 'Contact' }]
+                  .filter(Boolean)
+                  .map((item) => (
+                    <SheetClose asChild key={item.label}>
+                      <Link href={item.href} className="text-lg text-foreground hover:text-primary transition-colors py-2">
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  ))}
                  <p className="text-lg text-foreground py-2">Services</p>
                  <div className="flex flex-col space-y-3 pl-4">
-                  {serviceItems.map((item) => (
+                  {serviceItems.filter(item => !!item.href).map((item) => (
                     <SheetClose asChild key={item.label}>
                       <Link href={item.href} className="text-md text-muted-foreground hover:text-primary transition-colors">
                         {item.label}

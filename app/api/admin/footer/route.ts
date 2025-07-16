@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
-import FooterContent from '@/models/FooterContent';
+import FooterContent from 'models/FooterContent';
 
 const initialFooterData = {
     companyName: 'InfiniTech Solutions',

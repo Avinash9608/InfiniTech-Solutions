@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { Button } from '@/components/ui/button';
 import { Menu, Bot, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import type { NavItem } from '@/app/admin/layout';
+import type { NavItem } from '@/lib/types';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
@@ -21,7 +21,7 @@ export default function Header({ navItems, secret }: HeaderProps) {
 
   const getAccordionDefaultValues = () => {
     const activeParent = navItems.find(item => 
-      item.children?.some(child => pathname.startsWith(child.href))
+      item.children?.some((child: NavItem) => pathname.startsWith(child.href))
     );
     return activeParent ? [activeParent.label] : [];
   };
@@ -60,7 +60,7 @@ export default function Header({ navItems, secret }: HeaderProps) {
                                     </span>
                                 </AccordionTrigger>
                             <AccordionContent className="pl-8">
-                              {item.children.map(child => (
+                              {item.children.map((child: NavItem) => (
                                 <SheetClose asChild key={child.label}>
                                    <Link href={`${child.href}?secret=${secret}`} className="block py-2 text-muted-foreground hover:text-foreground">
                                     {child.label}

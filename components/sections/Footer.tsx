@@ -5,7 +5,8 @@ import { Linkedin, Facebook, Instagram, Twitter, Mail, Phone, MapPin, ArrowUp } 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { IFooterContent } from '@/models/FooterContent';
+import type { IFooterContent, IQuickLink, ISocialLink } from '@/lib/types';
+import React from 'react';
 
 const socialIcons: { [key: string]: React.ElementType } = {
   Linkedin,
@@ -90,13 +91,15 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold text-primary mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {content.quickLinks.map(item => (
-                <li key={item.label}>
-                  <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {content.quickLinks
+                .filter((item: IQuickLink) => typeof item.href === 'string' && item.href.length > 0 && typeof item.label === 'string')
+                .map((item: IQuickLink) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
 
@@ -105,15 +108,21 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center text-muted-foreground">
                 <Mail className="w-4 h-4 mr-2 text-primary" />
-                <a href={`mailto:${content.contactInfo.email}`} className="hover:text-primary">{content.contactInfo.email}</a>
+                <a href={`mailto:${content.contactInfo.email}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {content.contactInfo.email}
+                </a>
               </li>
               <li className="flex items-center text-muted-foreground">
                 <Phone className="w-4 h-4 mr-2 text-primary" />
-                <a href={`tel:${content.contactInfo.phone}`} className="hover:text-primary">{content.contactInfo.phone}</a>
+                <a href={`tel:${content.contactInfo.phone.replace(/\s/g, '')}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  {content.contactInfo.phone}
+                </a>
               </li>
-              <li className="flex items-start text-muted-foreground">
-                <MapPin className="w-4 h-4 mr-2 mt-0.5 text-primary flex-shrink-0" />
-                <span>{content.contactInfo.address}</span>
+              <li className="flex items-center text-muted-foreground">
+                <MapPin className="w-4 h-4 mr-2 text-primary" />
+                <span className="text-sm text-muted-foreground">
+                  {content.contactInfo.address}
+                </span>
               </li>
             </ul>
           </div>
@@ -121,54 +130,45 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold text-primary mb-4">Follow Us</h4>
             <div className="flex space-x-4">
-              {content.socialLinks.map(social => {
-                const Icon = socialIcons[social.label] || Link;
-                return (
+              {content.socialLinks
+                .filter((social: ISocialLink) => typeof social.href === 'string' && social.href.length > 0 && typeof social.label === 'string')
+                .map((social: ISocialLink) => (
                   <Link key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label}
                     className="text-muted-foreground hover:text-primary transition-colors p-2 rounded-full hover:bg-accent/20">
-                    <Icon className="w-5 h-5" />
+                    {socialIcons[social.label] ? (
+                      React.createElement(socialIcons[social.label], { className: "w-5 h-5" })
+                    ) : null}
                   </Link>
-                )
-              })}
+                ))}
             </div>
           </div>
         </div>
 
-        <div className="border-t border-border pt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} {content.companyName}. All rights reserved.
-          </p>
-          <div className="mt-2">
-            <Link href="/privacy-policy" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <span className="mx-2 text-xs text-muted-foreground">|</span>
-            <Link href="/terms-of-service" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
-          </div>
+        <div className="mt-2">
+          {[{ href: '/privacy-policy', label: 'Privacy Policy' }, { href: '/terms-of-service', label: 'Terms of Service' }]
+            .filter((item: { href: string; label: string }) => typeof item.href === 'string' && item.href.length > 0 && typeof item.label === 'string')
+            .map((item: { href: string; label: string }) => (
+              <Link key={item.label} href={item.href} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                {item.label}
+              </Link>
+            ))}
+          <span className="mx-2 text-xs text-muted-foreground">|</span>
+        </div>
+
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          &copy; {currentYear} {content.companyName}. All rights reserved.
         </div>
       </div>
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-8 right-8 z-50"
-          >
-            <Button
-              onClick={scrollToTop}
-              className="h-12 w-12 rounded-full shadow-lg"
-              size="icon"
-            >
-              <ArrowUp className="h-6 w-6" />
-              <span className="sr-only">Go to top</span>
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+      {isVisible && (
+        <Button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-primary text-primary-foreground p-3 rounded-full hover:bg-primary/90 transition-colors"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </Button>
+      )}
     </footer>
   );
 }
