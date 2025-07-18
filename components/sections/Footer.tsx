@@ -26,15 +26,15 @@ const defaultFooterContent: IFooterContent = {
     { href: '/contact', label: 'Contact' },
   ],
   contactInfo: {
-    email: 'info@infinitech.com',
-    phone: '+1 (234) 567-890',
-    address: '123 Tech Avenue, Silicon Valley, CA 94000',
+    email: 'm3361555@gmail.com',
+    phone: '+919608989499',
+    address: '123 Tech Avenue, patna, Bihar 804453',
   },
   socialLinks: [
-    { href: 'https://linkedin.com', label: 'LinkedIn' },
-    { href: 'https://facebook.com', label: 'Facebook' },
-    { href: 'https://instagram.com', label: 'Instagram' },
-    { href: 'https://twitter.com', label: 'Twitter' },
+    { href: 'https://www.linkedin.com/in/avinash-kumar-653001213/', label: 'LinkedIn' },
+    { href: 'https://www.facebook.com/profile.php?id=61560575177253', label: 'Facebook' },
+    { href: 'https://www.instagram.com/tns_server_protocal_error/', label: 'Instagram' },
+    { href: 'https://x.com/Avinashmadhuka', label: 'Twitter' },
   ]
 } as IFooterContent;
 

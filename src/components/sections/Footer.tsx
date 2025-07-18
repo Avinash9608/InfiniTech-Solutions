@@ -15,10 +15,10 @@ const footerNavItems = [
 ];
 
 const socialLinks = [
-  { href: 'https://linkedin.com', icon: Linkedin, label: 'LinkedIn' },
-  { href: 'https://facebook.com', icon: Facebook, label: 'Facebook' },
-  { href: 'https://instagram.com', icon: Instagram, label: 'Instagram' },
-  { href: 'https://twitter.com', icon: Twitter, label: 'Twitter' },
+  { href: 'https://www.linkedin.com/in/avinash-kumar-653001213/', icon: Linkedin, label: 'LinkedIn' },
+  { href: 'https://www.facebook.com/profile.php?id=61560575177253', icon: Facebook, label: 'Facebook' },
+  { href: 'https://www.instagram.com/tns_server_protocal_error/', icon: Instagram, label: 'Instagram' },
+  { href: 'https://x.com/Avinashmadhuka', icon: Twitter, label: 'Twitter' },
 ];
 
 export default function Footer() {
@@ -75,15 +75,15 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center text-muted-foreground">
                 <Mail className="w-4 h-4 mr-2 text-primary" />
-                <a href="mailto:info@infinitech.com" className="hover:text-primary">info@infinitech.com</a>
+                <a href="mailto:m3361555@gmail.com" className="hover:text-primary">m3361555@gmail.com</a>
               </li>
               <li className="flex items-center text-muted-foreground">
                 <Phone className="w-4 h-4 mr-2 text-primary" />
-                <a href="tel:+1234567890" className="hover:text-primary">+1 (234) 567-890</a>
+                <a href="tel:+919608989499" className="hover:text-primary">+919608989499</a>
               </li>
               <li className="flex items-start text-muted-foreground">
                 <MapPin className="w-4 h-4 mr-2 mt-0.5 text-primary flex-shrink-0" />
-                <span>123 Tech Avenue, Silicon Valley, CA 94000</span>
+                <span>123 Tech Avenue, patna, Bihar 804453</span>
               </li>
             </ul>
           </div>

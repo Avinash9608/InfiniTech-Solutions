@@ -11,38 +11,38 @@ import type { Testimonial } from '@/lib/types';
 const testimonialsData: Testimonial[] = [
   {
     id: '1',
-    name: 'Sarah L.',
+    name: 'Ankit Singh.',
     company: 'Tech Solutions Inc.',
     rating: 5,
     review: 'InfiniTech Solutions transformed our online presence! Their web design team was incredibly creative and responsive. Our new website is both beautiful and functional.',
-    avatarUrl: 'https://placehold.co/100x100.png',
+    avatarUrl: 'https://images.unsplash.com/photo-1558154839-19f6ddb31384?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHdvbWVuJTIwc21pbGVmYWNlfGVufDB8fDB8fHww',
     dataAiHint: 'woman smiling'
   },
   {
     id: '2',
-    name: 'John B.',
+    name: 'Aman Singh.',
     company: 'Growth Co.',
     rating: 5,
     review: 'The digital marketing services provided by InfiniTech have significantly boosted our leads. Their SEO strategies are top-notch. Highly recommended!',
-    avatarUrl: 'https://placehold.co/100x100.png',
+    avatarUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFuJTIwcHJvZmVzc2lvbmFsfGVufDB8fDB8fHww',
     dataAiHint: 'man professional'
   },
   {
     id: '3',
-    name: 'Emily K.',
+    name: 'Avinash Kumar',
     company: 'Innovate App Studios',
     rating: 4,
     review: 'We partnered with InfiniTech for our mobile app development, and they delivered an excellent product on time and within budget. Great communication throughout.',
-    avatarUrl: 'https://placehold.co/100x100.png',
+    avatarUrl: 'https://images.unsplash.com/photo-1570215171424-f74325192b55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBlcnNvbiUyMGRldmVsb3BlcnxlbnwwfHwwfHx8MA%3D%3D',
     dataAiHint: 'person developer'
   },
   {
     id: '4',
-    name: 'Michael P.',
+    name: 'Sagar Patel',
     company: 'Enterprise Software Ltd.',
     rating: 5,
     review: 'Their custom software development team understood our complex requirements perfectly and built a solution that has streamlined our operations significantly.',
-    avatarUrl: 'https://placehold.co/100x100.png',
+    avatarUrl: 'https://images.unsplash.com/photo-1539025828301-b314ca222fa9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2VvJTIwcG9ydHJhaXR8ZW58MHx8MHx8fDA%3D',
     dataAiHint: 'ceo portrait'
   },
 ];
